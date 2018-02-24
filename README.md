@@ -21,5 +21,5 @@
   - [ ] v2: GUI
   - [ ] v3: Extensibility
   - [ ] Passport, SaaS
-- tested on Go 1.9
+- tested on Go 1.9 and 1.10
 - made with ❤️ by [OctoLab](https://www.octolab.org/)
