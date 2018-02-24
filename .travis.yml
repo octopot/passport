@@ -37,3 +37,9 @@ after_success:
 
 notifications:
   slack: octolab:1eMS7IqOArBipiu31jYVd0cN
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/73f5dfca113f6d94f560
+    on_success: change
+    on_failure: always
+    on_start:   never
