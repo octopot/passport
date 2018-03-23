@@ -1,5 +1,5 @@
 OPEN_BROWSER       =
-SUPPORTED_VERSIONS = 1.9 latest
+SUPPORTED_VERSIONS = 1.9 1.10 latest
 
 include makes/env.mk
 include makes/local.mk
@@ -7,6 +7,7 @@ include makes/docker.mk
 include env/cmd.make
 include env/docker.make
 include env/docker-compose.make
+include env/tools.make
 
 .PHONY: code-quality-check
 code-quality-check: ARGS = \
