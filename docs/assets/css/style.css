@@ -1,0 +1,8 @@
+footer {
+    display: block;
+    padding: 2.5rem 0;
+    background-color: #f9f9f9; border-top: .05rem solid #e5e5e5;
+    color: #999; text-align: center;
+}
+footer .fa-heart { color: red; }
+img { max-width: 100%; }
