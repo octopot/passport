@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Passport | Person Identifier as a Service</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
     <link rel="stylesheet" href="assets/css/material-kit.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
@@ -29,14 +30,123 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
 <body>
-<footer>
-    <p>Feel free to support us at</p>
-    <a href="https://www.patreon.com/octolab"><img height="50" src="assets/img/patreon.svg" alt="Patreon"></a>
-    <p>Template <a href="https://www.creative-tim.com/product/material-kit">Material Kit</a>
-        is provided by <a href="https://github.com/creativetimofficial/material-kit">Creative Tim</a>
-        <i class="fas fa-heart"></i>
-    </p>
+<nav id="header" class="navbar navbar-color-on-scroll navbar-expand-lg navbar-transparent fixed-top bg-primary">
+    <div class="container">
+        <div class="navbar-translate">
+            <a class="navbar-brand" href="https://www.octolab.org/">
+                <img src="assets/img/octolab.png" alt="OctoLab Open(src Source)">
+            </a>
+            <button class="navbar-toggler" type="button" data-target="#menu" data-toggle="collapse">
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div id="menu" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a id="feedback-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Feedback</a>
+                    <div class="dropdown-menu dropdown-with-icons">
+                        <a class="dropdown-item" href="https://gitter.im/kamilsk/passport">Gitter</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://twitter.com/ikamilsk">@kamilsk</a>
+                        <a class="dropdown-item" href="https://twitter.com/octolab_inc">@octolab</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"
+                           href="mailto:feedback@octolab.org?subject=Passport%20(from%20GitHub%20page)">
+                            feedback@octolab.org
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a id="github-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">GitHub</a>
+                    <div class="dropdown-menu dropdown-with-icons">
+                        <a class="dropdown-item" href="https://github.com/kamilsk/passport">Project</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://github.com/kamilsk">Kamil Samigullin</a>
+                        <a class="dropdown-item" href="https://github.com/octolab">OctoLab</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="https://www.patreon.com/octolab">Patreon</a></li>
+            </ul>
+            <a class="ribbon" href="https://github.com/kamilsk/click/fork">
+                <img src="assets/img/fork.png" alt="Fork me on GitHub">
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div id="hero" class="page-header header-filter clear-filter purple-filter" data-parallax="true">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto">
+                <div class="brand">
+                    <h1 class="title">Passport</h1>
+                    <h2>Person Identifier as a Service</h2>
+                    <h4>&mdash; a server where your users live</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main main-raised">
+    <div class="section section-basic">
+        <div class="container">
+            <div class="section text-center">
+
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <h2 class="title">Let&apos;s talk product</h2>
+                        <h5 class="description">Coming soon...</h5>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-info">
+                                    <i class="material-icons">account_circle</i>
+                                </div>
+                                <h4 class="info-title">Know Your Users</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-danger">
+                                    <i class="material-icons">fingerprint</i>
+                                </div>
+                                <h4 class="info-title">Identify Your Users</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-success">
+                                    <i class="material-icons">verified_user</i>
+                                </div>
+                                <h4 class="info-title">Verify Your Users</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>Feel free to support us at</p>
+        <a href="https://www.patreon.com/octolab"><img height="50" src="assets/img/patreon.svg" alt="Patreon"></a>
+        <p>Template <a href="https://www.creative-tim.com/product/material-kit">Material Kit</a>
+            is provided by <a href="https://github.com/creativetimofficial/material-kit">Creative Tim</a>
+            <i class="fas fa-heart"></i>
+        </p>
+    </div>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
