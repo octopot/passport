@@ -23,6 +23,7 @@
     ".",
     "hcl/ast",
     "hcl/parser",
+    "hcl/printer",
     "hcl/scanner",
     "hcl/strconv",
     "hcl/token",
@@ -30,7 +31,7 @@
     "json/scanner",
     "json/token"
   ]
-  revision = "23c074d0eceb2b8a5bfdbb271ab780cde70f05a8"
+  revision = "f40e974e75af4e271d97ce0fc917af5898ae7bda"
 
 [[projects]]
   name = "github.com/inconshreveable/mousetrap"
@@ -92,14 +93,14 @@
 [[projects]]
   name = "github.com/spf13/viper"
   packages = ["."]
-  revision = "25b30aa063fc18e48662b86996252eabdcf2f0c7"
-  version = "v1.0.0"
+  revision = "b5e8006cbee93ec955a89ab31e0e3ce3204f3736"
+  version = "v1.0.2"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "88d2dcc510266da9f7f8c7f34e1940716cab5f5c"
+  revision = "13d03a9a82fba647c21a0ef8fba44a795d0f0835"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -117,12 +118,12 @@
 [[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
-  version = "v2.1.1"
+  revision = "86f5ed62f8a0ee96bd888d2efdfd6d4fb100a4eb"
+  version = "v2.2.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1500959fa4830a2022a67bf2b2776cc6cef7e4aa6fea64cb6f6c79cc3e798068"
+  inputs-digest = "7a7d1d9bce17465e11e9fd5c25c1cac0af023ed5af0bbc5eedeb666a48317d5c"
   solver-name = "gps-cdcl"
   solver-version = 1
