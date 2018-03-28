@@ -1,4 +1,4 @@
-> # Passport [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Person%20Identifier%20as%20a%20Service&url=https://kamilsk.github.io/passport/&via=ikamilsk&hashtags=go,service,person-identifier,auth)
+> # Passport [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Person%20Identifier%20as%20a%20Service&url=https://kamilsk.github.io/passport/&via=ikamilsk&hashtags=go,service,authentication,identification)
 > [![Analytics](https://ga-beacon.appspot.com/UA-109817251-24/passport/readme?pixel)](https://kamilsk.github.io/passport/)
 > Person Identifier as a Service.
 
@@ -18,8 +18,8 @@
 
 - brief roadmap
   - [ ] v1: MVP
-  - [ ] v2: GUI
-  - [ ] v3: Extensibility
+  - [ ] v2: CRUD
+  - [ ] v3: GUI
   - [ ] Passport, SaaS
 - tested on Go 1.9 and 1.10
 - made with ❤️ by [OctoLab](https://www.octolab.org/)

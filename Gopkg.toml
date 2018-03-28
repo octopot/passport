@@ -3,6 +3,10 @@
   version = "^3.3.0"
 
 [[constraint]]
+  name = "github.com/lib/pq"
+  branch = "master"
+
+[[constraint]]
   name = "github.com/spf13/cobra"
   version = "*"
 
