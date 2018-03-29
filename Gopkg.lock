@@ -24,6 +24,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/golang/mock"
+  packages = ["gomock"]
+  revision = "58cd061d09382b6011f84c1291ebe50ef2e25bab"
+
+[[projects]]
+  branch = "master"
   name = "github.com/hashicorp/hcl"
   packages = [
     ".",
@@ -71,6 +77,12 @@
   packages = ["."]
   revision = "acdc4509485b587f5e675510c4f2c63e90ff68a8"
   version = "v1.1.0"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -125,6 +137,12 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
   revision = "13d03a9a82fba647c21a0ef8fba44a795d0f0835"
@@ -145,12 +163,12 @@
 [[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "86f5ed62f8a0ee96bd888d2efdfd6d4fb100a4eb"
-  version = "v2.2.0"
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e82bbc4eab38abff8aa37907ab98a3d5cb115390b048fbc4de28a12dd08cb5e9"
+  inputs-digest = "239ab1ea3645694427e794c45b0e6b6463bf3ea911d3509407141451c9ec3f82"
   solver-name = "gps-cdcl"
   solver-version = 1
