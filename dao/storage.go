@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/kamilsk/passport/dao/postgres"
+	"github.com/kamilsk/passport/domain"
 )
 
 // Must returns a new instance of the Storage or panics if it cannot configure it.
@@ -53,4 +54,14 @@ func (l *Storage) Connection() *sql.DB {
 // Dialect returns supported database dialect.
 func (l *Storage) Dialect() string {
 	return postgres.Dialect()
+}
+
+// UUID returns a new generated unique identifier.
+func (l *Storage) UUID() (domain.UUID, error) {
+	return postgres.UUID(l.conn)
+}
+
+// TakeFingerprint takes a user fingerprint and stores it.
+func (l *Storage) TakeFingerprint(fp domain.Fingerprint) (domain.Fingerprint, error) {
+	return postgres.TakeFingerprint(l.conn, fp)
 }

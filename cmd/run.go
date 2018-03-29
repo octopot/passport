@@ -8,7 +8,10 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/kamilsk/passport/dao"
+	"github.com/kamilsk/passport/server"
 	"github.com/kamilsk/passport/server/router/chi"
+	"github.com/kamilsk/passport/service"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -27,7 +30,13 @@ var runCmd = &cobra.Command{
 			go startMonitoring()
 		}
 
-		handler := chi.NewRouter(nil)
+		handler := chi.NewRouter(
+			server.New(
+				service.New(
+					dao.Must(dao.Connection(dsn(cmd))),
+				),
+			),
+		)
 		srv := &http.Server{Addr: addr, Handler: handler,
 			ReadTimeout:       asDuration(cmd.Flag("read-timeout").Value),
 			ReadHeaderTimeout: asDuration(cmd.Flag("read-header-timeout").Value),
