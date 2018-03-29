@@ -97,12 +97,6 @@ logs-service: docker-compose
 
 
 
-.PHONY: demo
-demo: COMMAND = exec service passport migrate up --with-demo
-demo: docker-compose
-
-
-
 .PHONY: rm-volumes
 rm-volumes: down
 	docker volume ls | tail +2 | awk '{print $$2}' | grep ^env_ | xargs docker volume rm

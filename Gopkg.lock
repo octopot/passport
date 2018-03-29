@@ -91,6 +91,15 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/rubenv/sql-migrate"
+  packages = [
+    ".",
+    "sqlparse"
+  ]
+  revision = "081fe17d19ff4e2dd9f5a0c1158e6bcf74da6906"
+
+[[projects]]
   name = "github.com/spf13/afero"
   packages = [
     ".",
@@ -161,6 +170,12 @@
   version = "v0.3.0"
 
 [[projects]]
+  name = "gopkg.in/gorp.v1"
+  packages = ["."]
+  revision = "c87af80f3cc5036b55b83d77171e156791085e2e"
+  version = "v1.7.1"
+
+[[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
@@ -169,6 +184,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "239ab1ea3645694427e794c45b0e6b6463bf3ea911d3509407141451c9ec3f82"
+  inputs-digest = "d57adbdfc30f9f7a4b26ef39dc6fdced327a64cdeda761d883e922b7888bad67"
   solver-name = "gps-cdcl"
   solver-version = 1

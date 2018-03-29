@@ -17,6 +17,7 @@ func TestAsset(t *testing.T) {
 		golden string
 	}{
 		{"init migration", "static/migrations/1_initial.sql", "./migrations/1_initial.sql"},
+		{"client script", "static/scripts/passport.js", "./scripts/passport.js"},
 	}
 
 	for _, test := range tests {
@@ -46,8 +47,9 @@ func TestAssetDir(t *testing.T) {
 		assetDir string
 		expected []string
 	}{
-		{"root", "static", []string{"migrations"}},
-		{"migrations", "static/migrations", []string{"1_initial.sql", "demo"}},
+		{"root", "static", []string{"migrations", "scripts"}},
+		{"migrations", "static/migrations", []string{"1_initial.sql"}},
+		{"scripts", "static/scripts", []string{"passport.js"}},
 		{"not found", "static/migrations/unknown", nil},
 	}
 
