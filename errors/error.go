@@ -20,6 +20,8 @@ type ApplicationError interface {
 
 // ClientError defines the behavior of application errors related to a user error.
 type ClientError interface {
+	// IsInvalidInput returns true if the error related to invalid data provided by a user.
+	IsInvalidInput() bool
 	// IsResourceNotFound returns true if the error related to an empty search result.
 	IsResourceNotFound() bool
 }
@@ -72,6 +74,8 @@ func (err withCode) IsServerError() (ServerError, bool) {
 	}
 	return nil, false
 }
+
+func (err withCode) IsInvalidInput() bool { return err.code == InvalidInputCode }
 
 func (err withCode) IsResourceNotFound() bool { return err.code == ResourceNotFoundCode }
 

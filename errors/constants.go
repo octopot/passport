@@ -3,6 +3,8 @@ package errors
 const (
 	// ClientErrorCode is a code of a client error.
 	ClientErrorCode = iota
+	// InvalidInputCode is a code of a client error when data provided by a user is invalid.
+	InvalidInputCode
 	// ResourceNotFoundCode is a code of a client error when the requested resource does not exist.
 	ResourceNotFoundCode
 

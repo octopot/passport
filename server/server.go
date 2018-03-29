@@ -1,10 +1,12 @@
 package server
 
 import (
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"net/url"
 
+	"github.com/kamilsk/passport/errors"
 	"github.com/kamilsk/passport/static"
 	"github.com/kamilsk/passport/transfer/api/v1/tracker"
 )
@@ -36,25 +38,64 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	if err != nil {
 		cookie = &http.Cookie{Name: MarkerKey}
 	}
-	response := s.service.HandleTrackerInstructionV1(tracker.InstructionRequest{Marker: cookie.Value})
+
+	response := s.service.HandleTrackerInstructionV1(tracker.InstructionRequest{EncryptedMarker: cookie.Value})
 	if response.Error != nil {
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	{ // domain logic
-		cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.Marker
-		http.SetCookie(rw, cookie)
-	}
-
+	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedMarker
+	http.SetCookie(rw, cookie)
 	rw.Header().Set("Content-Type", "application/javascript")
 	rw.WriteHeader(http.StatusOK)
-	s.template.Execute(rw, struct{ BaseURL *url.URL }{s.baseURL})
+	s.template.Execute(rw, struct {
+		BaseURL   *url.URL
+		Endpoint  string
+		Threshold uint8
+		Correct   int
+		Watch     int
+	}{
+		BaseURL:   s.baseURL,
+		Endpoint:  "/api/v1/tracker/fingerprint",
+		Threshold: 2,
+		Correct:   100,  // Milliseconds
+		Watch:     5000, // Milliseconds
+	})
 }
 
 // PostTrackerFingerprintV1 is responsible for `POST /api/v1/tracker/fingerprint` request handling.
 func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Request) {
-	rw.Write([]byte(req.RequestURI))
+	cookie, err := req.Cookie(MarkerKey)
+	if err != nil {
+		rw.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	defer req.Body.Close()
+	request := tracker.FingerprintRequest{EncryptedMarker: cookie.Value}
+	if err := json.NewDecoder(req.Body).Decode(&request.Payload); err != nil {
+		rw.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	response := s.service.HandleTrackerFingerprintV1(request)
+	if response.Error != nil {
+		if err, is := response.Error.(errors.ApplicationError); is {
+			if _, is := err.IsClientError(); is {
+				rw.WriteHeader(http.StatusBadRequest)
+				return
+			}
+		}
+		rw.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if response.Fingerprint.UpdatedAt.Valid {
+		rw.WriteHeader(http.StatusOK)
+		return
+	}
+	rw.WriteHeader(http.StatusCreated)
 }
 
 func passport() string {

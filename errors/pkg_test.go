@@ -31,6 +31,7 @@ func TestApplicationError(t *testing.T) {
 
 	tests := []TestCase{
 		{"not found", errors.NotFound, Result{isUserError: true, isResourceNotFound: true}},
+		{"validation", errors.Validation, Result{isUserError: true, isInvalidInput: true}},
 		{"database", errors.Database, Result{isServerError: true, isDatabaseFail: true}},
 		{"serialization", errors.Serialization, Result{isServerError: true, isSerializationFail: true}},
 	}
@@ -53,6 +54,7 @@ func TestApplicationError(t *testing.T) {
 				}
 				if userErr, is := err.IsClientError(); is {
 					obtained.isUserError = is
+					obtained.isInvalidInput = userErr.IsInvalidInput()
 					obtained.isResourceNotFound = userErr.IsResourceNotFound()
 				}
 				assert.Equal(t, tc.expected, obtained)
@@ -62,7 +64,7 @@ func TestApplicationError(t *testing.T) {
 }
 
 func TestApplicationErrorMessage(t *testing.T) {
-	const emptyMessage, serializationMessage = "", "serialization"
+	const emptyMessage, validationMessage, serializationMessage = "", "validation", "serialization"
 
 	tests := []struct {
 		name        string
@@ -75,6 +77,9 @@ func TestApplicationErrorMessage(t *testing.T) {
 				return emptyMessage, fmt.Errorf(name), "uuid is not presented"
 			},
 			func() (string, string) { return "error: uuid is not presented: not found", errors.ClientErrorMessage }},
+		{"validation", errors.Validation,
+			func(name string) (string, error, string) { return validationMessage, nil, "invalid marker" },
+			func() (string, string) { return validationMessage, validationMessage }},
 		{"database", errors.Database,
 			func(name string) (string, error, string) { return emptyMessage, fmt.Errorf(name), "connection is lost" },
 			func() (string, string) {

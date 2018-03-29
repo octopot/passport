@@ -2,11 +2,11 @@ package tracker
 
 // RedirectRequest represents `GET /api/v1/tracker/instruction` request.
 type InstructionRequest struct {
-	Marker string
+	EncryptedMarker string
 }
 
 // RedirectRequest represents `GET /api/v1/tracker/instruction` response.
 type InstructionResponse struct {
-	Marker string
-	Error  error
+	EncryptedMarker string
+	Error           error
 }

@@ -49,7 +49,7 @@ func TestAssetDir(t *testing.T) {
 	}{
 		{"root", "static", []string{"migrations", "scripts"}},
 		{"migrations", "static/migrations", []string{"1_initial.sql"}},
-		{"scripts", "static/scripts", []string{"passport.js"}},
+		{"scripts", "static/scripts", []string{"demo.html", "passport.js"}},
 		{"not found", "static/migrations/unknown", nil},
 	}
 

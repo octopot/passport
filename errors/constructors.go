@@ -7,6 +7,11 @@ func NotFound(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}
 	return withCode{ResourceNotFoundCode, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
 }
 
+// Validation returns the application error related to invalid user input.
+func Validation(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
+	return withCode{InvalidInputCode, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
+}
+
 // Database returns the application error related to database problems.
 func Database(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
 	return withCode{DatabaseFailCode, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}

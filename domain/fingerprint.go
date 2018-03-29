@@ -1,6 +1,11 @@
 package domain
 
-import "database/sql"
+import (
+	"database/sql"
+	"regexp"
+)
+
+var fingerprint = regexp.MustCompile(`(?i:^[0-9A-F]{32,64}$)`)
 
 // Fingerprint represents a fingerprint of a user.
 type Fingerprint struct {
@@ -10,4 +15,9 @@ type Fingerprint struct {
 	Counter   int
 	CreatedAt string
 	UpdatedAt sql.NullString
+}
+
+// IsValid returns true if the Fingerprint contains valid value.
+func (f Fingerprint) IsValid() bool {
+	return f.Value != "" && fingerprint.MatchString(f.Value)
 }

@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Fingerprint</title>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fingerprintjs2@1.6.1/dist/fingerprint2.min.js"></script>
+<script>
 (function (base, signer, sender){
     'use strict';
 
@@ -6,7 +16,7 @@
     function notify() {
         var url = base;
         if (url.substr(-1) === '/') { url = url.substr(0, url.length - 1); }
-        url += '{{ .Endpoint }}';
+        url += '/api/v1/tracker/fingerprint';
         sender({
             type: 'POST',
             url: url,
@@ -23,15 +33,28 @@
                 payload.metadata = components;
                 payload.counter = 0;
             }
-            if (++payload.counter > {{ .Threshold }}) {
+            if (++payload.counter > 2) {
                 clearInterval(corrector);
                 synced || notify();
             }
         })
-    }, {{ .Correct }});
+    }, 100);
 
     var watcher = setInterval(function () {
         synced && clearInterval(watcher);
         synced || notify();
-    }, {{ .Watch }});
-}('{{ .BaseURL }}', window.Fingerprint2, window.jQuery.ajax));
+    }, 5000);
+}('http://localhost:8080/', window.Fingerprint2, window.jQuery.ajax));
+</script>
+<script type="snippet">
+	r.Get("/demo", func(rw http.ResponseWriter, req *http.Request) {
+		f, err := os.Open("static/scripts/demo.html")
+		if err != nil {
+			http.Error(rw, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		}
+		defer f.Close()
+		io.Copy(rw, f)
+	})
+</script>
+</body>
+</html>
