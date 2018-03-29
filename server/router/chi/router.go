@@ -16,10 +16,15 @@ func NewRouter(api router.Server) http.Handler {
 	r.Use(middleware.Logger)
 
 	r.Route("/api/v1/tracker", func(r chi.Router) {
-		r.Use(middleware.NoCache)
+		r.Route("/instruction", func(r chi.Router) {
+			r.Use(middleware.NoCache)
+			r.Get("/", api.GetTrackerInstructionV1)
+		})
 
-		r.Get("/instruction", api.GetTrackerInstructionV1)
-		r.Post("/fingerprint", api.PostTrackerFingerprintV1)
+		r.Route("/fingerprint", func(r chi.Router) {
+			r.Use(middleware.AllowContentType("application/json"))
+			r.Post("/", api.PostTrackerFingerprintV1)
+		})
 	})
 
 	return r

@@ -32,6 +32,7 @@ var runCmd = &cobra.Command{
 
 		handler := chi.NewRouter(
 			server.New(
+				cmd.Flag("base-url").Value.String(),
 				service.New(
 					dao.Must(dao.Connection(dsn(cmd))),
 				),
@@ -57,6 +58,7 @@ func init() {
 		func() error { return v.BindEnv("read_header_timeout") },
 		func() error { return v.BindEnv("write_timeout") },
 		func() error { return v.BindEnv("idle_timeout") },
+		func() error { return v.BindEnv("base_url") },
 	)
 	{
 		v.SetDefault("max_cpus", 1)
@@ -66,6 +68,7 @@ func init() {
 		v.SetDefault("read_header_timeout", time.Duration(0))
 		v.SetDefault("write_timeout", time.Duration(0))
 		v.SetDefault("idle_timeout", time.Duration(0))
+		v.SetDefault("base_url", "http://localhost/")
 	}
 	{
 		runCmd.Flags().Int("cpus", v.GetInt("max_cpus"),
@@ -86,6 +89,8 @@ func init() {
 			"enable pprof on /pprof")
 		runCmd.Flags().Bool("with-monitoring", false,
 			"enable expvar on /vars")
+		runCmd.Flags().String("base-url", v.GetString("base_url"),
+			"hostname (and path) to the root")
 	}
 	db(runCmd)
 }
