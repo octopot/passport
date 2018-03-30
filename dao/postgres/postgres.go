@@ -33,7 +33,8 @@ func UUID(db *sql.DB) (domain.UUID, error) {
 
 // TakeFingerprint takes a user fingerprint and stores it.
 func TakeFingerprint(db *sql.DB, fp domain.Fingerprint) (domain.Fingerprint, error) {
-	err := db.QueryRow(upsertFingerprint, fp.Marker, fp.Value).Scan(&fp.ID, &fp.Counter, &fp.CreatedAt, &fp.UpdatedAt)
+	err := db.QueryRow(upsertFingerprint, fp.Marker, fp.Value).
+		Scan(&fp.ID, &fp.Counter, &fp.CreatedAt, &fp.UpdatedAt)
 	if err != nil {
 		return fp, errors.Database(errors.ServerErrorMessage, err,
 			"trying to insert fingerprint %q with marker %q", fp.Value, fp.Marker)

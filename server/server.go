@@ -75,7 +75,7 @@ func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Requ
 	}
 
 	defer req.Body.Close()
-	request := tracker.FingerprintRequest{EncryptedMarker: cookie.Value}
+	request := tracker.FingerprintRequest{EncryptedMarker: cookie.Value, Header: req.Header}
 	if err := json.NewDecoder(req.Body).Decode(&request.Payload); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
 		return
