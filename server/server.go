@@ -52,6 +52,7 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	s.template.Execute(rw, struct {
 		BaseURL   *url.URL
 		Endpoint  string
+		Limit     uint8
 		Threshold uint8
 		Correct   int
 		Watch     int
@@ -59,10 +60,11 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	}{
 		BaseURL:   s.baseURL,
 		Endpoint:  "/api/v1/tracker/fingerprint",
+		Limit:     5,
 		Threshold: 3,
 		Correct:   100,  // Milliseconds
 		Watch:     1000, // Milliseconds
-		Debug:     false,
+		Debug:     true,
 	})
 }
 

@@ -27,6 +27,13 @@
         });
     }
 
+    function stop() {
+        if (!synced && payload.counter > 5) {
+            logger('passport: critical: payload was not be sent');
+        }
+        return synced || payload.counter > 5;
+    }
+
     var corrector = setInterval(function () {
         !lock && new signer().get(function(result, components) {
             if (result !== payload.fingerprint) {
@@ -35,12 +42,13 @@
                 payload.counter = 0;
                 log('corrector has made a correction')
             }
-            if (synced) {
+            payload.counter++;
+            if (stop()) {
                 clearInterval(corrector);
                 log('corrector is done');
                 return;
             }
-            if (++payload.counter >= 3) {
+            if (payload.counter >= 3) {
                 lock = true;
                 notify(corrector, 'corrector');
             }
@@ -48,7 +56,7 @@
     }, 100);
 
     var watcher = setInterval(function () {
-        if (synced)  {
+        if (stop())  {
             clearInterval(watcher);
             log('watcher is done');
             return
