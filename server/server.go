@@ -64,7 +64,7 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 		Threshold: 3,
 		Correct:   100,  // Milliseconds
 		Watch:     1000, // Milliseconds
-		Debug:     true,
+		Debug:     false,
 	})
 }
 
