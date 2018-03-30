@@ -8,7 +8,7 @@
 
     function notify(handle, informer) {
         log(informer + ' has sent a notification');
-        var url = (base.substr(-1) === '/' ? base.substr(0, base.len - 1) : base) + '/api/v1/tracker/fingerprint';
+        var url = (base.substr(-1) === '/' ? base.substr(0, base.length - 1) : base) + '/api/v1/tracker/fingerprint';
         sender({
             type: 'POST',
             url: url,
