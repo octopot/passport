@@ -55,12 +55,14 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 		Threshold uint8
 		Correct   int
 		Watch     int
+		Debug     bool
 	}{
 		BaseURL:   s.baseURL,
 		Endpoint:  "/api/v1/tracker/fingerprint",
-		Threshold: 2,
+		Threshold: 3,
 		Correct:   100,  // Milliseconds
-		Watch:     5000, // Milliseconds
+		Watch:     1000, // Milliseconds
+		Debug:     false,
 	})
 }
 
@@ -99,7 +101,7 @@ func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Requ
 }
 
 func passport() string {
-	b, err := static.Asset("static/scripts/passport.js")
+	b, err := static.Asset("static/scripts/passport.min.js")
 	if err != nil {
 		panic(err)
 	}
