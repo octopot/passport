@@ -7,13 +7,13 @@
     function log(msg) { debug && logger('passport: ' + msg); }
 
     function notify(handle, informer) {
-        log(informer + ' has sent a notification');
         var url = (base.substr(-1) === '/' ? base.substr(0, base.length - 1) : base) + '/api/v1/tracker/fingerprint';
         sender({
             type: 'POST',
             url: url,
             data: JSON.stringify(payload),
             contentType: 'application/json; charset=utf-8',
+            xhrFields: { withCredentials: true },
             success: function () {
                 synced = true;
                 clearInterval(handle);
@@ -23,7 +23,7 @@
                 log('sender has synced a payload');
                 log(informer + ' is done');
             },
-            complete: function () { lock = false; }
+            complete: function () { lock = false; log(informer + ' has sent a notification to ' + url); }
         });
     }
 

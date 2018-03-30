@@ -91,6 +91,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/rs/cors"
+  packages = ["."]
+  revision = "feef513b9575b32f84bafa580aad89b011259019"
+  version = "v1.3.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/rubenv/sql-migrate"
   packages = [
@@ -184,6 +190,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d57adbdfc30f9f7a4b26ef39dc6fdced327a64cdeda761d883e922b7888bad67"
+  inputs-digest = "03a2a5fb7525bcf298f2bdd739a3e216a2a656a040187ca2d96b47816d28e231"
   solver-name = "gps-cdcl"
   solver-version = 1
