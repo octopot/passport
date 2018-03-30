@@ -20,6 +20,7 @@ FROM alpine:latest AS service
 LABEL maintainer="Kamil Samigullin <kamil@samigullin.info>"
 
 COPY --from=build /go/bin/passport /usr/local/bin/
+COPY ./public/js/fingerprint2.min.js ./public/js/jquery.min.js /usr/share/passport/
 
 ENV BIND            "0.0.0.0"
 ENV PORT            "80"
@@ -29,6 +30,8 @@ ENV MONITORING_PORT "8091"
 EXPOSE ${PORT}
 EXPOSE ${PROFILE_PORT}
 EXPOSE ${MONITORIGN_PORT}
+
+VOLUME /usr/share/passport
 
 ENTRYPOINT [ "passport" ]
 CMD        [ "run" ]

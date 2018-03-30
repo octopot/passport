@@ -19,6 +19,8 @@ services:
     - db
     env_file: .env
     restart: on-failure
+    volumes:
+    - vendor:/usr/share/passport
 
   service: # https://hub.docker.com/r/kamilsk/passport/
     build:
@@ -33,6 +35,8 @@ services:
     - 8080:${PORT}
     - 8090:8090
     - 8091:8091
+    volumes:
+    - vendor:/usr/share/passport
 
   server: # https://hub.docker.com/r/kamilsk/nginx/
     image: kamilsk/nginx:alpine
@@ -52,6 +56,7 @@ services:
     - ./etc/service.conf:/etc/nginx/conf.d/service.template:ro
     - certificates:/etc/nginx/ssl
     - le_challenge:/usr/share/sites/${DOMAIN_NAME}
+    - vendor:/usr/share/nginx/html/vendor
 
 volumes:
   pgdata:
@@ -61,4 +66,7 @@ volumes:
     driver: local
 
   le_challenge:
+    driver: local
+
+  vendor:
     driver: local

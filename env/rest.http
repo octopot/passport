@@ -1,3 +1,11 @@
+### Static
+
+GET http://localhost/vendor/fingerprint2.min.js
+
+###
+
+GET http://localhost/vendor/jquery.min.js
+
 ### API v1
 
 GET http://localhost:8080/api/v1/tracker/instruction
@@ -7,6 +15,7 @@ Cookie: marker=41ca5e09-3ce2-4094-b108-3ecc257c6fa4; Path=/
 
 POST http://localhost:8080/api/v1/tracker/fingerprint
 Content-Type: application/json
+Cookie: marker=41ca5e09-3ce2-4094-b108-3ecc257c6fa4; Path=/
 
 {"fingerprint": "ee657834d1ff745af85141252ee0e435", "metadata": [{"key": "value"}], "counter": 3}
 
