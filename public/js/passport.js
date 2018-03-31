@@ -1,7 +1,7 @@
 (function (context, signer, sender, logger, config){
     'use strict';
     var ctx = (context.Passport = context.Passport || {'debug': config.debug}),
-        payload = {'fingerprint': undefined, 'metadata': undefined, 'marker': '{{.EncryptedMarker}}'},
+        payload = {'fingerprint': undefined, 'metadata': undefined},
         counter = 0, synced = false, lock = false;
 
     function log(msg) { ctx.debug && logger(config.prefix + msg); }

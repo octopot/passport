@@ -50,14 +50,7 @@ func main() {
 			if req.URL.Path == "/js/passport.js" {
 				rw.WriteHeader(http.StatusOK)
 				js.Lookup("passport.js").
-					Execute(rw, struct {
-						// issue #19
-						EncryptedMarker string
-
-						Endpoint string
-					}{
-						EncryptedMarker: "demo-cross-origin",
-
+					Execute(rw, struct{ Endpoint string }{
 						Endpoint: fmt.Sprintf("http://localhost:%d/api/v1/tracker/fingerprint", *devPort),
 					})
 				return
