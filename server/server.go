@@ -49,22 +49,21 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	http.SetCookie(rw, cookie)
 	rw.Header().Set("Content-Type", "application/javascript")
 	rw.WriteHeader(http.StatusOK)
+
+	endpoint := *s.baseURL
+	endpoint.Path = "/api/v1/tracker/fingerprint"
 	s.template.Execute(rw, struct {
-		BaseURL   *url.URL
 		Endpoint  string
 		Limit     uint8
 		Threshold uint8
-		Correct   int
-		Watch     int
+		Correct   int // Milliseconds
+		Watch     int // Milliseconds
 		Debug     bool
 	}{
-		BaseURL:   s.baseURL,
-		Endpoint:  "/api/v1/tracker/fingerprint",
-		Limit:     5,
-		Threshold: 3,
-		Correct:   100,  // Milliseconds
-		Watch:     1000, // Milliseconds
-		Debug:     false,
+		Endpoint: endpoint.String(),
+		Limit:    5, Threshold: 3,
+		Correct: 250, Watch: 1000,
+		Debug: false,
 	})
 }
 

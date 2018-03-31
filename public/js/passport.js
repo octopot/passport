@@ -1,69 +1,67 @@
-(function (context, base, signer, sender, logger, debug){
+(function (context, signer, sender, logger, config){
     'use strict';
-    context.Passport = {'fingerprint': undefined, 'metadata': undefined, 'counter': undefined, 'synced': undefined};
+    var ctx = (context.Passport = context.Passport || {'debug': config.debug}),
+        payload = {'fingerprint': undefined, 'metadata': undefined},
+        counter = 0, synced = false, lock = false;
 
-    var payload = {'fingerprint': undefined, 'metadata': undefined, 'counter': undefined}, synced = false, lock = false;
+    function log(msg) { ctx.debug && logger(config.prefix + msg); }
 
-    function log(msg) { debug && logger('passport: ' + msg); }
+    function stop() {
+        if (!synced && counter > config.limit) {
+            logger(config.prefix + 'critical: payload was not be sent');
+        }
+        return synced || counter > config.limit;
+    }
 
     function notify(handle, informer) {
-        var url = (base.substr(-1) === '/' ? base.substr(0, base.length - 1) : base) + '/api/v1/tracker/fingerprint';
+        if (stop()) {
+            clearInterval(handle);
+            log(informer + ' is done');
+            return;
+        }
+        if (lock) {
+            return; // try next time
+        }
+        lock = true;
+        counter++;
         sender({
             type: 'POST',
-            url: url,
+            url: config.endpoint,
             data: JSON.stringify(payload),
             contentType: 'application/json; charset=utf-8',
             xhrFields: { withCredentials: true },
             success: function () {
                 synced = true;
-                clearInterval(handle);
-                context.Passport.fingerprint = payload.fingerprint;
-                context.Passport.metadata = payload.metadata;
-                context.Passport.counter = payload.counter;
+                ctx.fingerprint = payload.fingerprint;
+                ctx.metadata = payload.metadata;
                 log('sender has synced a payload');
-                log(informer + ' is done');
             },
-            complete: function () { lock = false; log(informer + ' has sent a notification to ' + url); }
+            complete: function () { lock = false; log(informer + ' has sent a notification to ' + config.endpoint); }
         });
     }
 
-    function stop() {
-        if (!synced && payload.counter > 5) {
-            logger('passport: critical: payload was not be sent');
+    var corrector = setInterval((function () {
+        var threshold = 1;
+        new signer().get(function(result, components) { payload.fingerprint = result; payload.metadata = components; });
+        return function () {
+            new signer().get(function(result, components) {
+                if (result !== payload.fingerprint) {
+                    payload.fingerprint = result;
+                    payload.metadata = components;
+                    threshold = 0;
+                    log('corrector has made a correction');
+                }
+                if (++threshold >= config.threshold) {
+                    notify(corrector, 'corrector');
+                }
+            });
         }
-        return synced || payload.counter > 5;
-    }
+    }()), config.correct);
 
-    var corrector = setInterval(function () {
-        !lock && new signer().get(function(result, components) {
-            if (result !== payload.fingerprint) {
-                payload.fingerprint = result;
-                payload.metadata = components;
-                payload.counter = 0;
-                log('corrector has made a correction')
-            }
-            payload.counter++;
-            if (stop()) {
-                clearInterval(corrector);
-                log('corrector is done');
-                return;
-            }
-            if (payload.counter >= 3) {
-                lock = true;
-                notify(corrector, 'corrector');
-            }
-        })
-    }, 100);
-
-    var watcher = setInterval(function () {
-        if (stop())  {
-            clearInterval(watcher);
-            log('watcher is done');
-            return
-        }
-        if (!lock) {
-            lock = true;
-            notify(watcher, 'watcher');
-        }
-    }, 1000);
-}(window, 'http://localhost:8080/', window.Fingerprint2, window.jQuery.ajax, window.console.log, true));
+    var watcher = setInterval(function () { notify(watcher, 'watcher'); }, config.watch);
+}(window, window.Fingerprint2, window.jQuery.ajax, window.console.log, {
+    'endpoint': 'http://{{ .DevHost }}/api/v1/tracker/fingerprint', 'prefix': 'passport: ',
+    'limit': 3, 'threshold': 3,
+    'correct': 250, 'watch': 1000,
+    'debug': false
+}));

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Fingerprint Cross-origin resource sharing</title>
+</head>
+<body>
+<script>window.Passport = {'debug': true};</script>
+<script src="http://{{ .DevHost }}/js/jquery.min.js"></script>
+<script src="http://{{ .DevHost }}/js/fingerprint2.min.js"></script>
+<script src="http://{{ .DevHost }}/js/passport.js" data-compressed-by="https://jscompress.com/"></script>
+</body>
+</html>

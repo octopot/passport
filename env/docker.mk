@@ -27,6 +27,7 @@ publish: docker-build docker-push
 .PHONY: docker-start
 docker-start:
 	docker run --rm -d \
+	           --env-file env/.example.env \
 	           --name passport-dev \
 	           --publish 8080:8080 \
 	           --publish 8090:8090 \
