@@ -38,6 +38,7 @@ func main() {
 			html.Lookup("cross-origin.html").
 				Execute(rw, struct{ DevHost string }{DevHost: fmt.Sprintf("localhost:%d", *devPort)})
 		})
+		demo.Get("/*", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusOK) })
 		go func() {
 			log.Printf("starting demo server at :%d, use `open http://localhost:%[1]d/` to view it\n", *demoPort)
 			http.ListenAndServe(fmt.Sprintf(":%d", *demoPort), demo)
@@ -49,7 +50,16 @@ func main() {
 			if req.URL.Path == "/js/passport.js" {
 				rw.WriteHeader(http.StatusOK)
 				js.Lookup("passport.js").
-					Execute(rw, struct{ DevHost string }{DevHost: fmt.Sprintf("localhost:%d", *devPort)})
+					Execute(rw, struct {
+						// issue #19
+						EncryptedMarker string
+
+						Endpoint string
+					}{
+						EncryptedMarker: "demo-cross-origin",
+
+						Endpoint: fmt.Sprintf("http://localhost:%d/api/v1/tracker/fingerprint", *devPort),
+					})
 				return
 			}
 			f, err := os.Open("public" + req.URL.Path)
@@ -59,7 +69,8 @@ func main() {
 				return
 			}
 			defer f.Close()
-			http.SetCookie(rw, &http.Cookie{Name: "marker", Value: "demo-cross-origin", Path: "/"})
+			http.SetCookie(rw, &http.Cookie{Name: "marker", Value: "demo-cross-origin", Path: "/",
+				HttpOnly: true, Secure: true})
 			io.Copy(rw, f)
 		})
 		dev.Route("/api/v1/tracker/fingerprint", func(r chi.Router) {

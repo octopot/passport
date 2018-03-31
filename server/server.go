@@ -3,6 +3,9 @@ package server
 import (
 	"encoding/json"
 	"html/template"
+	"io"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -46,6 +49,7 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	}
 
 	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedMarker
+	cookie.Secure, cookie.HttpOnly = true, true
 	http.SetCookie(rw, cookie)
 	rw.Header().Set("Content-Type", "application/javascript")
 	rw.WriteHeader(http.StatusOK)
@@ -53,6 +57,9 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	endpoint := *s.baseURL
 	endpoint.Path = "/api/v1/tracker/fingerprint"
 	s.template.Execute(rw, struct {
+		// issue #19
+		EncryptedMarker string
+
 		Endpoint  string
 		Limit     uint8
 		Threshold uint8
@@ -60,6 +67,8 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 		Watch     int // Milliseconds
 		Debug     bool
 	}{
+		EncryptedMarker: response.EncryptedMarker,
+
 		Endpoint: endpoint.String(),
 		Limit:    5, Threshold: 3,
 		Correct: 250, Watch: 1000,
@@ -71,16 +80,26 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Request) {
 	cookie, err := req.Cookie(MarkerKey)
 	if err != nil {
-		rw.WriteHeader(http.StatusBadRequest)
-		return
+		// issue #19: Safari sends cookies in `demo-cross-origin`-mode, but doesn't send it in production
+		cookie = &http.Cookie{}
+		log.Printf("\n\n[CRITICAL] cookie not found, skip this check (%q)\n\n", req.UserAgent())
+		/*
+			rw.WriteHeader(http.StatusBadRequest)
+			io.Copy(ioutil.Discard, req.Body)
+			req.Body.Close()
+			return
+		*/
 	}
 
 	defer req.Body.Close()
 	request := tracker.FingerprintRequest{EncryptedMarker: cookie.Value, Header: req.Header}
 	if err := json.NewDecoder(req.Body).Decode(&request.Payload); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
+		io.Copy(ioutil.Discard, req.Body)
+		req.Body.Close()
 		return
 	}
+	req.Body.Close()
 
 	response := s.service.HandleTrackerFingerprintV1(request)
 	if response.Error != nil {

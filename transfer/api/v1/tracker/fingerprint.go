@@ -9,6 +9,9 @@ type FingerprintRequest struct {
 	Payload         struct {
 		Fingerprint string                   `json:"fingerprint"`
 		Metadata    []map[string]interface{} `json:"metadata"`
+
+		// issue #19
+		EncryptedMarker string `json:"marker"`
 	}
 }
 

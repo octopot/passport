@@ -1,7 +1,7 @@
 (function (context, signer, sender, logger, config){
     'use strict';
     var ctx = (context.Passport = context.Passport || {'debug': config.debug}),
-        payload = {'fingerprint': undefined, 'metadata': undefined},
+        payload = {'fingerprint': undefined, 'metadata': undefined, 'marker': '{{.EncryptedMarker}}'},
         counter = 0, synced = false, lock = false;
 
     function log(msg) { ctx.debug && logger(config.prefix + msg); }
@@ -60,7 +60,7 @@
 
     var watcher = setInterval(function () { notify(watcher, 'watcher'); }, config.watch);
 }(window, window.Fingerprint2, window.jQuery.ajax, window.console.log, {
-    'endpoint': 'http://{{ .DevHost }}/api/v1/tracker/fingerprint', 'prefix': 'passport: ',
+    'endpoint': '{{.Endpoint}}', 'prefix': 'passport: ',
     'limit': 3, 'threshold': 3,
     'correct': 250, 'watch': 1000,
     'debug': false

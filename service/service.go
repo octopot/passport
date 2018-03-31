@@ -39,6 +39,12 @@ func (s *Passport) HandleTrackerFingerprintV1(request tracker.FingerprintRequest
 
 	{ // TODO encrypt/decrypt marker
 		marker := domain.UUID(request.EncryptedMarker)
+
+		// issue #19
+		if request.EncryptedMarker == "" {
+			marker = domain.UUID(request.Payload.EncryptedMarker)
+		}
+
 		if !marker.IsValid() {
 			response.Error = errors.Validation(errors.ClientErrorMessage, origin.New("invalid marker"),
 				"trying to validate user marker %q", marker)
