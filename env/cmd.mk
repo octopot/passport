@@ -32,8 +32,3 @@ cmd-migrate-down:
 .PHONY: dev-server
 dev-server:
 	go run $(LDFLAGS) $(BUILD_FILES) run --port=8080 --with-profiler --with-monitoring
-
-
-.PHONY: demo-cross-origin
-demo-cross-origin:
-	go run --tags=demo-cross-origin public/cross-origin.go

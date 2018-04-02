@@ -15,6 +15,7 @@
 # environment
 *.env
 !/env/.example.env
+!/env/cross-origin/.example.env
 
 # Material Kit template
 /template/

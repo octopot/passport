@@ -6,6 +6,10 @@ env:
 	cp -n env/.example.env env/.env || true # for containers
 	cp -n env/.env .env             || true # for docker compose file, https://docs.docker.com/compose/env-file/
 
+.PHONY: reset-env
+reset-env:
+	rm -f env/.env env/cross-origin/.env .env || true
+
 
 .PHONY: up
 up: env
@@ -110,3 +114,23 @@ stop-server: env
 .PHONY: log-server
 log-server: env
 	docker-compose $(DC_FILE) logs -f server
+
+# ~~~
+
+.PHONY: cross-origin-up
+cross-origin-up:
+	cp -n env/cross-origin/.example.env env/cross-origin/.env || true
+	cp -n env/cross-origin/.env .env                          || true
+	docker-compose -f env/cross-origin/docker-compose.yml up -d
+
+.PHONY: cross-origin-status
+cross-origin-status:
+	cp -n env/cross-origin/.example.env env/cross-origin/.env || true
+	cp -n env/cross-origin/.env .env                          || true
+	docker-compose -f env/cross-origin/docker-compose.yml ps
+
+.PHONY: cross-origin-down
+cross-origin-down:
+	cp -n env/cross-origin/.example.env env/cross-origin/.env || true
+	cp -n env/cross-origin/.env .env                          || true
+	docker-compose -f env/cross-origin/docker-compose.yml down --volumes --rmi local
