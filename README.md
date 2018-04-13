@@ -76,13 +76,13 @@ $ docker pull kamilsk/passport:latest
 ### From source code
 
 ```bash
-$ egg github.com/kamilsk/passport@^1.0.0 -- make generate test install
+$ egg github.com/kamilsk/passport@^1.0.0 -- make test install
 ```
 
 #### Mirror
 
 ```bash
-$ egg bitbucket.org/kamilsk/passport@^1.0.0 -- make generate test install
+$ egg bitbucket.org/kamilsk/passport@^1.0.0 -- make test install
 ```
 
 > [egg](https://github.com/kamilsk/egg) is an `extended go get`.
@@ -98,8 +98,8 @@ $ egg bitbucket.org/kamilsk/passport@^1.0.0 -- make generate test install
 
 - brief roadmap
   - [x] v1: MVP
-  - [ ] v2: ...
-  - [ ] v3: ...
+  - [ ] v2: Simple Auth
+  - [ ] v3: OAuth
   - [ ] v4: CRUD
   - [ ] v5: GUI
   - [ ] Passport, SaaS
