@@ -13,11 +13,11 @@
 ```bash
 $ make up status
 
-    Name                   Command               State                                  Ports
------------------------------------------------------------------------------------------------------------------------------
-env_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
-env_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
-env_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
+    Name                        Command               State                                  Ports
+----------------------------------------------------------------------------------------------------------------------------------
+passport_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
+passport_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
+passport_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
 ```
 
 ## Specification
