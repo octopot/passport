@@ -9,6 +9,7 @@ import (
 	"github.com/rs/cors"
 )
 
+// NewRouter returns configured `github.com/go-chi/chi` router.
 func NewRouter(api router.Server) http.Handler {
 	r := chi.NewRouter()
 

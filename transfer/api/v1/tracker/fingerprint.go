@@ -12,7 +12,7 @@ type FingerprintRequest struct {
 	}
 }
 
-// FingerprintRequest represents `GET /api/v1/tracker/fingerprint` response.
+// FingerprintResponse represents `GET /api/v1/tracker/fingerprint` response.
 type FingerprintResponse struct {
 	Fingerprint domain.Fingerprint
 	Error       error
