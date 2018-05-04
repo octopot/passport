@@ -11,10 +11,10 @@ import (
 )
 
 // RootCmd is the entry point.
-var RootCmd = &cobra.Command{Short: "Passport"}
+var RootCmd = &cobra.Command{Use: "passport", Short: "Passport"}
 
 func init() {
-	RootCmd.AddCommand(migrateCmd, runCmd)
+	RootCmd.AddCommand(completionCmd, migrateCmd, runCmd)
 }
 
 func must(actions ...func() error) {
