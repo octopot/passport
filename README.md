@@ -114,6 +114,7 @@ $ passport completion zsh  > /path/to/zsh-completions/_passport.zsh
   - [ ] v4: CRUD
   - [ ] v5: GUI
   - [ ] Passport, SaaS
+- [research](../../tree/research)
 - tested on Go 1.9 and 1.10
 
 ---
