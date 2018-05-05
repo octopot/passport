@@ -20,7 +20,7 @@ Requirements:
 ```bash
 $ make up status
 
-    Name                        Command               State                                  Ports
+       Name                     Command               State                                  Ports
 ----------------------------------------------------------------------------------------------------------------------------------
 passport_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
 passport_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
