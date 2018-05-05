@@ -19,12 +19,10 @@ cmd-version:
 	go run $(LDFLAGS) $(BUILD_FILES) version
 
 .PHONY: cmd-migrate-up
-cmd-migrate-up: FLAGS =
 cmd-migrate-up:
 	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) up 1
 
 .PHONY: cmd-migrate-down
-cmd-migrate-down: FLAGS =
 cmd-migrate-down:
 	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) down 1
 
