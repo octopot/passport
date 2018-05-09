@@ -1,0 +1,7 @@
+[[constraint]]
+  name = "github.com/centrifugal/centrifuge"
+  branch = "master"
+
+[prune]
+  go-tests = true
+  unused-packages = true

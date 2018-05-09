@@ -1,0 +1,11 @@
+[[constraint]]
+  name = "github.com/centrifugal/centrifuge-go"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/centrifugal/centrifugo"
+  branch = "master"
+
+[prune]
+  go-tests = true
+  unused-packages = true

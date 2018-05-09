@@ -7,7 +7,15 @@
 
 ## Basis
 
+- [ ] [github.com/centrifugal/centrifuge](https://github.com/centrifugal/centrifuge)
 - [ ] [github.com/igrigorik/ga-beacon](https://github.com/igrigorik/ga-beacon)
+
+## Projects
+
+### Centrifugo
+
+- [ ] [github.com/centrifugal/centrifugo](https://github.com/centrifugal/centrifugo)
+- [ ] [github.com/centrifugal/centrifuge-go](https://github.com/centrifugal/centrifuge-go)
 
 ## Problems
 
