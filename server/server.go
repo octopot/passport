@@ -38,8 +38,8 @@ type Server struct {
 // GetTrackerInstructionV1 is responsible for `GET /api/v1/tracker/instruction` request handling.
 func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Request) {
 	cookie, err := req.Cookie(MarkerKey)
-	if err != nil {
-		cookie = &http.Cookie{Name: MarkerKey}
+	if err != nil || !cookie.HttpOnly || !cookie.Secure {
+		cookie = &http.Cookie{Name: MarkerKey, Secure: true, HttpOnly: true}
 	}
 
 	response := s.service.HandleTrackerInstructionV1(tracker.InstructionRequest{EncryptedMarker: cookie.Value})
@@ -49,7 +49,6 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 	}
 
 	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedMarker
-	cookie.Secure, cookie.HttpOnly = true, true
 	http.SetCookie(rw, cookie)
 	rw.Header().Set("Content-Type", "application/javascript")
 	rw.WriteHeader(http.StatusOK)
@@ -78,6 +77,13 @@ func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Requ
 		// issue #19: Safari sends cookies in `demo-cross-origin`-mode, but doesn't send it in production
 		log.Printf("\n\n[CRITICAL] cookie not found, skip this request (%q)\n\n", req.UserAgent())
 		rw.WriteHeader(http.StatusAccepted)
+		io.Copy(ioutil.Discard, req.Body)
+		req.Body.Close()
+		return
+	}
+	if !cookie.HttpOnly || !cookie.Secure {
+		// issue #22: prevent cookie manipulation
+		log.Printf("\n\n[CRITICAL] cookie is not safe, skip this request (%+v)\n\n", *cookie)
 		io.Copy(ioutil.Discard, req.Body)
 		req.Body.Close()
 		return
