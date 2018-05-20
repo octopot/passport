@@ -1,12 +1,16 @@
+IMAGE_VERSION := 1.x
+
 .PHONY: docker-build
 docker-build:
 	docker build -f env/Dockerfile \
+	             -t kamilsk/passport:$(IMAGE_VERSION) \
 	             -t kamilsk/passport:latest \
 	             --force-rm --no-cache --pull --rm \
 	             .
 
 .PHONY: docker-push
 docker-push:
+	docker push kamilsk/passport:$(IMAGE_VERSION)
 	docker push kamilsk/passport:latest
 
 .PHONY: docker-refresh
@@ -15,7 +19,7 @@ docker-refresh:
 	| grep '^kamilsk\/passport\s\+' \
 	| awk '{print $$3}' \
 	| xargs docker rmi -f &>/dev/null || true
-	docker pull kamilsk/passport:latest
+	docker pull kamilsk/passport:$(IMAGE_VERSION)
 
 
 
@@ -32,7 +36,7 @@ docker-start:
 	           --publish 8080:8080 \
 	           --publish 8090:8090 \
 	           --publish 8091:8091 \
-	           kamilsk/passport:latest
+	           kamilsk/passport:$(IMAGE_VERSION)
 
 .PHONY: docker-logs
 docker-logs:
