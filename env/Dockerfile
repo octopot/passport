@@ -31,7 +31,5 @@ EXPOSE ${PORT}
 EXPOSE ${PROFILE_PORT}
 EXPOSE ${MONITORING_PORT}
 
-VOLUME /usr/share/passport
-
 ENTRYPOINT [ "passport" ]
 CMD        [ "run" ]
