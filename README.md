@@ -25,6 +25,7 @@ $ make up status
 passport_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
 passport_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
 passport_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
+
 ```
 
 ## Specification
@@ -78,7 +79,7 @@ $ tar xf passport.tar.gz -C "${GOPATH}"/bin/ && rm passport.tar.gz
 ### Docker Hub
 
 ```bash
-$ docker pull kamilsk/passport:latest
+$ docker pull kamilsk/passport:1.x
 ```
 
 ### From source code
