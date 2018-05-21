@@ -5,6 +5,8 @@ docker-build:
 	docker build -f env/Dockerfile \
 	             -t kamilsk/passport:$(IMAGE_VERSION) \
 	             -t kamilsk/passport:latest \
+	             -t quay.io/kamilsk/passport:$(IMAGE_VERSION) \
+	             -t quay.io/kamilsk/passport:latest \
 	             --force-rm --no-cache --pull --rm \
 	             .
 
@@ -12,6 +14,8 @@ docker-build:
 docker-push:
 	docker push kamilsk/passport:$(IMAGE_VERSION)
 	docker push kamilsk/passport:latest
+	docker push quay.io/kamilsk/passport:$(IMAGE_VERSION)
+	docker push quay.io/kamilsk/passport:latest
 
 .PHONY: docker-refresh
 docker-refresh:
