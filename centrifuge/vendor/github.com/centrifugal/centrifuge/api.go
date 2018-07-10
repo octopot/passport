@@ -3,7 +3,6 @@ package centrifuge
 import (
 	"context"
 
-	"github.com/centrifugal/centrifuge/internal/proto"
 	"github.com/centrifugal/centrifuge/internal/proto/apiproto"
 )
 
@@ -12,7 +11,6 @@ type apiExecutor struct {
 	node *Node
 }
 
-// newHandler creates new Handler.
 func newAPIExecutor(n *Node) *apiExecutor {
 	return &apiExecutor{
 		node: n,
@@ -38,7 +36,7 @@ func (h *apiExecutor) Publish(ctx context.Context, cmd *apiproto.PublishRequest)
 		return resp
 	}
 
-	pub := &proto.Publication{
+	pub := &Publication{
 		Data: cmd.Data,
 	}
 	if cmd.UID != "" {
@@ -54,7 +52,7 @@ func (h *apiExecutor) Publish(ctx context.Context, cmd *apiproto.PublishRequest)
 	return resp
 }
 
-// Broadcast publishes data into multiple channels.
+// Broadcast publishes the same data into many channels.
 func (h *apiExecutor) Broadcast(ctx context.Context, cmd *apiproto.BroadcastRequest) *apiproto.BroadcastResponse {
 
 	resp := &apiproto.BroadcastResponse{}
@@ -90,7 +88,7 @@ func (h *apiExecutor) Broadcast(ctx context.Context, cmd *apiproto.BroadcastRequ
 			resp.Error = apiproto.ErrorNamespaceNotFound
 		}
 
-		pub := &proto.Publication{
+		pub := &Publication{
 			Data: cmd.Data,
 		}
 		if cmd.UID != "" {
@@ -335,7 +333,7 @@ func (h *apiExecutor) Info(ctx context.Context, cmd *apiproto.InfoRequest) *apip
 
 	info, err := h.node.info()
 	if err != nil {
-		h.node.logger.log(newLogEntry(LogLevelError, "error calling stats", map[string]interface{}{"error": err.Error()}))
+		h.node.logger.log(newLogEntry(LogLevelError, "error calling info", map[string]interface{}{"error": err.Error()}))
 		resp.Error = apiproto.ErrorInternal
 		return resp
 	}

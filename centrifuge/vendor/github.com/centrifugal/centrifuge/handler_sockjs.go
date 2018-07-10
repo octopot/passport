@@ -8,16 +8,14 @@ import (
 	"time"
 
 	"github.com/centrifugal/centrifuge/internal/proto"
+
 	"github.com/igm/sockjs-go/sockjs"
 )
 
 const (
 	transportSockJS = "sockjs"
-)
-
-const (
-	// We don't use specific close codes because our connections
-	// can use another transport so there is no much sense to depend on this.
+	// We don't use specific close codes here because our connections
+	// can use other transport that do not have the same code semantics as SockJS.
 	sockjsCloseStatus = 3000
 )
 
@@ -65,13 +63,12 @@ func (t *sockjsTransport) write(data ...[]byte) error {
 	default:
 		for _, payload := range data {
 			// TODO: can actually be sent in single message as streaming JSON.
-			transportMessagesSent.WithLabelValues(transportSockJS).Inc()
-			transportBytesOut.WithLabelValues(transportSockJS).Add(float64(len(data)))
 			err := t.session.Send(string(payload))
 			if err != nil {
 				t.Close(DisconnectWriteError)
 				return err
 			}
+			transportMessagesSent.WithLabelValues(transportSockJS).Inc()
 		}
 		return nil
 	}
@@ -179,7 +176,16 @@ func (s *SockjsHandler) sockJSHandler(sess sockjs.Session) {
 		}
 		writer := newWriter(writerConf)
 		defer writer.close()
+
 		transport := newSockjsTransport(sess, writer)
+
+		select {
+		case <-s.node.NotifyShutdown():
+			transport.Close(DisconnectShutdown)
+			return
+		default:
+		}
+
 		c, err := newClient(sess.Request().Context(), s.node, transport)
 		if err != nil {
 			s.node.logger.log(newLogEntry(LogLevelError, "error creating client", map[string]interface{}{"transport": transportSockJS}))
@@ -187,9 +193,9 @@ func (s *SockjsHandler) sockJSHandler(sess sockjs.Session) {
 		}
 		defer c.close(nil)
 
-		s.node.logger.log(newLogEntry(LogLevelDebug, "SockJS connection established", map[string]interface{}{"client": c.ID()}))
+		s.node.logger.log(newLogEntry(LogLevelDebug, "client connection established", map[string]interface{}{"client": c.ID(), "transport": transportSockJS}))
 		defer func(started time.Time) {
-			s.node.logger.log(newLogEntry(LogLevelDebug, "SockJS connection completed", map[string]interface{}{"client": c.ID(), "time": time.Since(started)}))
+			s.node.logger.log(newLogEntry(LogLevelDebug, "client connection completed", map[string]interface{}{"client": c.ID(), "transport": transportSockJS, "duration": time.Since(started)}))
 		}(time.Now())
 
 		for {

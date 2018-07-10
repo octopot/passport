@@ -5,26 +5,30 @@
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Basis
+## Articles
 
-- [ ] [github.com/centrifugal/centrifuge](https://github.com/centrifugal/centrifuge)
-- [ ] [github.com/igrigorik/ga-beacon](https://github.com/igrigorik/ga-beacon)
-
-## Projects
-
-### Centrifugo
-
-- [ ] [github.com/centrifugal/centrifugo](https://github.com/centrifugal/centrifugo)
-- [ ] [github.com/centrifugal/centrifuge-go](https://github.com/centrifugal/centrifuge-go)
-
-## Problems
+### Problems
 
 - [ ] Intelligent Tracking Prevention
   - https://webkit.org/blog/7675/intelligent-tracking-prevention/
-  - https://medium.com/@bluepnume/safaris-new-tracking-rules-and-enabling-cross-domain-data-storage-85241eea7483
+  - https://webkit.org/blog/8142/intelligent-tracking-prevention-1-1/
+  - https://webkit.org/blog/8124/introducing-storage-access-api/
   - https://medium.com/@bluepnume/introducing-paypals-open-source-cross-domain-javascript-suite-95f991b2731d
-- [ ] The General Data Protection Regulations (GDPR) in EU (EEA)
-  - https://discourse.gohugo.io/t/hugo-vs-the-general-data-protection-regulations-gdpr-in-eu-eea/11526
+  - https://medium.com/@bluepnume/safaris-new-tracking-rules-and-enabling-cross-domain-data-storage-85241eea7483
+  - https://medium.com/@bluepnume/reinventing-cross-origin-requests-without-cors-b9c4cb645376
+
+## Review
+
+### Analytics
+
+- [ ] [github.com/igrigorik/ga-beacon](https://github.com/igrigorik/ga-beacon/)
+- [ ] [github.com/usefathom/fathom](https://github.com/usefathom/fathom/)
+
+### Communication
+
+- [ ] [github.com/centrifugal/centrifuge](https://github.com/centrifugal/centrifuge/)
+- [ ] [github.com/centrifugal/centrifuge-go](https://github.com/centrifugal/centrifuge-go/)
+- [ ] [github.com/centrifugal/centrifugo](https://github.com/centrifugal/centrifugo/)
 
 ---
 

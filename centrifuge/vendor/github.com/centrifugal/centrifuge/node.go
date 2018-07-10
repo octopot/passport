@@ -5,6 +5,7 @@
 package centrifuge
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"sync"
@@ -49,19 +50,19 @@ type Node struct {
 	shutdownCh chan struct{}
 
 	// eventHub to manage event handlers binded to node.
-	eventHub *NodeEventHub
+	eventHub *nodeEventHub
 
 	// logger allows to log throughout library code and proxy log entries to
 	// configured log handler.
 	logger *logger
 
-	// cache control encoder/decoder in node.
+	// cache control encoder/decoder in Node.
 	controlEncoder controlproto.Encoder
 	controlDecoder controlproto.Decoder
 }
 
 // New creates Node, the only required argument is config.
-func New(c Config) *Node {
+func New(c Config) (*Node, error) {
 	uid := uuid.Must(uuid.NewV4()).String()
 	n := &Node{
 		uid:            uid,
@@ -73,14 +74,15 @@ func New(c Config) *Node {
 		logger:         nil,
 		controlEncoder: controlproto.NewProtobufEncoder(),
 		controlDecoder: controlproto.NewProtobufDecoder(),
-		eventHub:       &NodeEventHub{},
+		eventHub:       &nodeEventHub{},
 	}
 	e, _ := NewMemoryEngine(n, MemoryEngineConfig{})
 	n.SetEngine(e)
-	return n
+	return n, nil
 }
 
-// SetLogHandler ...
+// SetLogHandler sets LogHandler to handle log messages with
+// severity higher than specific LogLevel.
 func (n *Node) SetLogHandler(level LogLevel, handler LogHandler) {
 	n.logger = newLogger(level, handler)
 }
@@ -114,10 +116,13 @@ func (n *Node) Reload(c Config) error {
 	return nil
 }
 
-// Run performs all startup actions. At moment must be called once on start
-// after engine and structure set.
+// Run performs node startup actions. At moment must be called once on start
+// after engine set to Node.
 func (n *Node) Run() error {
-	if err := n.engine.run(); err != nil {
+
+	eventHandler := &engineEventHandler{n}
+
+	if err := n.engine.run(eventHandler); err != nil {
 		return err
 	}
 
@@ -133,12 +138,13 @@ func (n *Node) Run() error {
 }
 
 // On allows access to NodeEventHub.
-func (n *Node) On() *NodeEventHub {
+func (n *Node) On() NodeEventHub {
 	return n.eventHub
 }
 
-// Shutdown sets shutdown flag and does various clean ups.
-func (n *Node) Shutdown() error {
+// Shutdown sets shutdown flag to Node so handlers could stop accepting
+// new requests and disconnects clients with shutdown reason.
+func (n *Node) Shutdown(ctx context.Context) error {
 	n.mu.Lock()
 	if n.shutdown {
 		n.mu.Unlock()
@@ -147,16 +153,23 @@ func (n *Node) Shutdown() error {
 	n.shutdown = true
 	close(n.shutdownCh)
 	n.mu.Unlock()
-	return n.hub.shutdown()
+	return n.hub.shutdown(ctx)
+}
+
+// NotifyShutdown returns a channel which will be closed on node shutdown.
+func (n *Node) NotifyShutdown() chan struct{} {
+	return n.shutdownCh
 }
 
 func (n *Node) updateGauges() {
 	numClientsGauge.Set(float64(n.hub.NumClients()))
 	numUsersGauge.Set(float64(n.hub.NumUsers()))
 	numChannelsGauge.Set(float64(n.hub.NumChannels()))
+	buildInfoGauge.WithLabelValues(n.Config().Version).Set(1)
 }
 
 func (n *Node) updateMetrics() {
+	n.updateGauges()
 	for {
 		select {
 		case <-n.shutdownCh:
@@ -195,12 +208,14 @@ func (n *Node) cleanNodeInfo() {
 	}
 }
 
-// Channels returns list of all engines clients subscribed on all Centrifugo nodes.
+// Channels returns list of all channels currently active across on all nodes.
+// This is a snapshot of state mostly useful for understanding what's going on
+// with system.
 func (n *Node) Channels() ([]string, error) {
 	return n.engine.channels()
 }
 
-// info returns aggregated stats from all Centrifugo nodes.
+// info returns aggregated stats from all nodes.
 func (n *Node) info() (*apiproto.InfoResult, error) {
 	nodes := n.nodes.list()
 	nodeResults := make([]*apiproto.NodeResult, len(nodes))
@@ -216,8 +231,7 @@ func (n *Node) info() (*apiproto.InfoResult, error) {
 	}
 
 	return &apiproto.InfoResult{
-		Engine: n.engine.name(),
-		Nodes:  nodeResults,
+		Nodes: nodeResults,
 	}, nil
 }
 
@@ -268,11 +282,11 @@ func (n *Node) handleControl(data []byte) error {
 	}
 }
 
-// handlePub handles messages published by web application or client into channel.
-// The goal of this method to deliver this message to all clients on this node subscribed
-// on channel.
+// handlePublication handles messages published into channel and
+// coming from engine. The goal of method is to deliver this message
+// to all clients on this node currently subscribed to channel.
 func (n *Node) handlePublication(ch string, pub *Publication) error {
-	messagesReceivedCount.WithLabelValues("pub").Inc()
+	messagesReceivedCount.WithLabelValues("publication").Inc()
 	numSubscribers := n.hub.NumSubscribers(ch)
 	hasCurrentSubscribers := numSubscribers > 0
 	if !hasCurrentSubscribers {
@@ -281,7 +295,8 @@ func (n *Node) handlePublication(ch string, pub *Publication) error {
 	return n.hub.broadcastPublication(ch, pub)
 }
 
-// handleJoin handles join messages.
+// handleJoin handles join messages - i.e. broadcasts it to
+// interested local clients subscribed to channel.
 func (n *Node) handleJoin(ch string, join *proto.Join) error {
 	messagesReceivedCount.WithLabelValues("join").Inc()
 	hasCurrentSubscribers := n.hub.NumSubscribers(ch) > 0
@@ -291,7 +306,8 @@ func (n *Node) handleJoin(ch string, join *proto.Join) error {
 	return n.hub.broadcastJoin(ch, join)
 }
 
-// handleLeave handles leave messages.
+// handleLeave handles leave messages - i.e. broadcasts it to
+// interested local clients subscribed to channel.
 func (n *Node) handleLeave(ch string, leave *proto.Leave) error {
 	messagesReceivedCount.WithLabelValues("leave").Inc()
 	hasCurrentSubscribers := n.hub.NumSubscribers(ch) > 0
@@ -578,7 +594,7 @@ func (n *Node) Presence(ch string) (map[string]*ClientInfo, error) {
 	return presence, nil
 }
 
-// presenceStats ...
+// presenceStats returns presence stats from engine.
 func (n *Node) presenceStats(ch string) (presenceStats, error) {
 	actionCount.WithLabelValues("presence_stats").Inc()
 	return n.engine.presenceStats(ch)
@@ -587,14 +603,14 @@ func (n *Node) presenceStats(ch string) (presenceStats, error) {
 // History returns a slice of last messages published into project channel.
 func (n *Node) History(ch string) ([]*Publication, error) {
 	actionCount.WithLabelValues("history").Inc()
-	pubs, err := n.engine.history(ch, historyFilter{Limit: 0})
+	pubs, err := n.engine.history(ch, 0)
 	if err != nil {
 		return nil, err
 	}
 	return pubs, nil
 }
 
-// recoverHistory ...
+// recoverHistory recovers publications since last UID seen by client.
 func (n *Node) recoverHistory(ch string, lastUID string) ([]*Publication, bool, error) {
 	actionCount.WithLabelValues("recover_history").Inc()
 	return n.engine.recoverHistory(ch, lastUID)
@@ -609,7 +625,7 @@ func (n *Node) RemoveHistory(ch string) error {
 // lastPublicationUID return last message id for channel.
 func (n *Node) lastPublicationUID(ch string) (string, error) {
 	actionCount.WithLabelValues("last_publication_uid").Inc()
-	publications, err := n.engine.history(ch, historyFilter{Limit: 1})
+	publications, err := n.engine.history(ch, 1)
 	if err != nil {
 		return "", err
 	}
@@ -725,12 +741,39 @@ func (r *nodeRegistry) clean(delay time.Duration) {
 }
 
 // NodeEventHub can deal with events binded to Node.
+// All its methods are not goroutine-safe as handlers must be
+// registered once before Node Run method called.
+type NodeEventHub interface {
+	Connect(handler ConnectHandler)
+}
+
+// nodeEventHub can deal with events binded to Node.
 // All its methods are not goroutine-safe.
-type NodeEventHub struct {
+type nodeEventHub struct {
 	connectHandler ConnectHandler
 }
 
 // Connect allows to set ConnectHandler.
-func (h *NodeEventHub) Connect(handler ConnectHandler) {
+func (h *nodeEventHub) Connect(handler ConnectHandler) {
 	h.connectHandler = handler
+}
+
+type engineEventHandler struct {
+	node *Node
+}
+
+func (h *engineEventHandler) HandlePublication(ch string, pub *Publication) error {
+	return h.node.handlePublication(ch, pub)
+}
+
+func (h *engineEventHandler) HandleJoin(ch string, join *Join) error {
+	return h.node.handleJoin(ch, join)
+}
+
+func (h *engineEventHandler) HandleLeave(ch string, leave *Leave) error {
+	return h.node.handleLeave(ch, leave)
+}
+
+func (h *engineEventHandler) HandleControl(data []byte) error {
+	return h.node.handleControl(data)
 }

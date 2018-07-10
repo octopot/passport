@@ -52,7 +52,7 @@
     "libcentrifugo/server",
     "libcentrifugo/statik"
   ]
-  revision = "7c47864253d03a6a85fe169d4ad87e49410dd1eb"
+  revision = "6e13059229630a812ed58ed0de2bdf327fb20291"
 
 [[projects]]
   branch = "master"
@@ -113,7 +113,7 @@
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
+  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
 
 [[projects]]
   name = "github.com/nats-io/nuid"
@@ -124,14 +124,14 @@
 [[projects]]
   name = "github.com/pelletier/go-toml"
   packages = ["."]
-  revision = "acdc4509485b587f5e675510c4f2c63e90ff68a8"
-  version = "v1.1.0"
+  revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/rakyll/statik"
   packages = ["fs"]
-  revision = "fd36b3595eb2ec8da4b8153b107f7ea08504899d"
-  version = "v0.1.1"
+  revision = "d5ad23bc79e541d7dbff7f7a7cc8f583c15fc384"
+  version = "v0.1.2"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -148,8 +148,8 @@
 [[projects]]
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "a1f051bc3eba734da4772d60e2d677f47cf93ef4"
-  version = "v0.0.2"
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
 
 [[projects]]
   branch = "master"
@@ -176,7 +176,7 @@
     "acme",
     "acme/autocert"
   ]
-  revision = "21052ae46654ecf18dfdba0f7c12701a1e2b3164"
+  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"

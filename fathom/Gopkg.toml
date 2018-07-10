@@ -1,0 +1,7 @@
+[[constraint]]
+  name = "github.com/usefathom/fathom"
+  version = "^1.0.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true

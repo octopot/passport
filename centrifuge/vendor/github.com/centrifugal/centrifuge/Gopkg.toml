@@ -20,10 +20,7 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
-ignored = [
-  "github.com/FZambia/go-logger",
-  "github.com/grpc-ecosystem/go-grpc-middleware"
-]
+ignored = ["github.com/centrifugal/centrifuge/examples*"]
 
 [[constraint]]
   name = "github.com/FZambia/sentinel"
@@ -60,3 +57,7 @@ ignored = [
 [[constraint]]
   name = "google.golang.org/grpc"
   version = "1.12.0"
+
+[[constraint]]
+  name = "github.com/dgrijalva/jwt-go"
+  version = "3.2.0"

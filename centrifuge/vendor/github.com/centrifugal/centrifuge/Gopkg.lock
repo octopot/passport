@@ -20,6 +20,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -41,8 +47,8 @@
     "ptypes/duration",
     "ptypes/timestamp"
   ]
-  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
-  version = "v1.0.0"
+  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/gomodule/redigo"
@@ -63,7 +69,7 @@
   branch = "master"
   name = "github.com/igm/sockjs-go"
   packages = ["sockjs"]
-  revision = "c8a8c6429d10e3b6865960ad8cb43779b8a834ef"
+  revision = "4e63e74d3787fb81d6568e1d9640bf869ca5ddf7"
 
 [[projects]]
   name = "github.com/matttproud/golang_protobuf_extensions"
@@ -197,6 +203,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b90b6c5866e8bf941172ff85e0ab333734d6f4993a978be945bbb24c93714b74"
+  inputs-digest = "595c1463f636d9015288b020c86af9a39987cb3d6fdd484e6c9f912f8e9d9ac7"
   solver-name = "gps-cdcl"
   solver-version = 1

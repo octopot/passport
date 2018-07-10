@@ -15,11 +15,8 @@ import (
 
 const (
 	transportWebsocket = "websocket"
-)
-
-const (
-	// We don't use specific websocket close codes because our connections
-	// can use another transport so there is no much sense to depend on this.
+	// We don't use specific close codes here because our connections
+	// can use other transport that do not have the same code semantics as Websocket.
 	websocketCloseStatus = 3000
 )
 
@@ -139,7 +136,6 @@ func (t *websocketTransport) write(data ...[]byte) error {
 			t.conn.SetWriteDeadline(time.Time{})
 		}
 		transportMessagesSent.WithLabelValues(transportWebsocket).Add(float64(len(data)))
-		transportBytesOut.WithLabelValues(transportWebsocket).Add(float64(bytesOut))
 		return nil
 	}
 }
@@ -179,18 +175,19 @@ func (t *websocketTransport) Close(disconnect *Disconnect) error {
 // WebsocketConfig represents config for WebsocketHandler.
 type WebsocketConfig struct {
 	// Compression allows to enable websocket permessage-deflate
-	// compression support for raw websocket connections. It does not guarantee
-	// that compression will be used - i.e. it only says that Centrifugo will
-	// try to negotiate it with client.
+	// compression support for raw websocket connections. It does
+	// not guarantee that compression will be used - i.e. it only
+	// says that server will try to negotiate it with client.
 	Compression bool
 
 	// CompressionLevel sets a level for websocket compression.
 	// See posiible value description at https://golang.org/pkg/compress/flate/#NewWriter
 	CompressionLevel int
 
-	// CompressionMinSize allows to set minimal limit in bytes for message to use
-	// compression when writing it into client connection. By default it's 0 - i.e. all messages
-	// will be compressed when WebsocketCompression enabled and compression negotiated with client.
+	// CompressionMinSize allows to set minimal limit in bytes for
+	// message to use compression when writing it into client connection.
+	// By default it's 0 - i.e. all messages will be compressed when
+	// WebsocketCompression enabled and compression negotiated with client.
 	CompressionMinSize int
 
 	// ReadBufferSize is a parameter that is used for raw websocket Upgrader.
@@ -286,7 +283,16 @@ func (s *WebsocketHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		}
 		writer := newWriter(writerConf)
 		defer writer.close()
+
 		transport := newWebsocketTransport(conn, writer, opts)
+
+		select {
+		case <-s.node.NotifyShutdown():
+			transport.Close(DisconnectShutdown)
+			return
+		default:
+		}
+
 		c, err := newClient(r.Context(), s.node, transport)
 		if err != nil {
 			s.node.logger.log(newLogEntry(LogLevelError, "error creating client", map[string]interface{}{"transport": transportWebsocket}))
@@ -294,9 +300,9 @@ func (s *WebsocketHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		}
 		defer c.close(nil)
 
-		s.node.logger.log(newLogEntry(LogLevelDebug, "websocket connection established", map[string]interface{}{"client": c.ID()}))
+		s.node.logger.log(newLogEntry(LogLevelDebug, "client connection established", map[string]interface{}{"client": c.ID(), "transport": transportWebsocket}))
 		defer func(started time.Time) {
-			s.node.logger.log(newLogEntry(LogLevelDebug, "websocket connection completed", map[string]interface{}{"client": c.ID(), "time": time.Since(started)}))
+			s.node.logger.log(newLogEntry(LogLevelDebug, "client connection completed", map[string]interface{}{"client": c.ID(), "transport": transportWebsocket, "duration": time.Since(started)}))
 		}(time.Now())
 
 		for {
@@ -314,8 +320,6 @@ func (s *WebsocketHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 // common data handling logic for Websocket and Sockjs handlers.
 func handleClientData(n *Node, c *Client, data []byte, transport Transport, writer *writer) bool {
-	transportBytesIn.WithLabelValues(transport.Name()).Add(float64(len(data)))
-
 	if len(data) == 0 {
 		n.logger.log(newLogEntry(LogLevelError, "empty client request received"))
 		c.close(DisconnectBadRequest)

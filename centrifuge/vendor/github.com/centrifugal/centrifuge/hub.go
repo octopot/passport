@@ -1,6 +1,7 @@
 package centrifuge
 
 import (
+	"context"
 	"sync"
 
 	"github.com/centrifugal/centrifuge/internal/proto"
@@ -10,13 +11,13 @@ import (
 type Hub struct {
 	mu sync.RWMutex
 
-	// match ConnID with actual client connection.
+	// match client ID with actual client connection.
 	conns map[string]*Client
 
 	// registry to hold active client connections grouped by user.
 	users map[string]map[string]struct{}
 
-	// registry to hold active subscriptions of clients on channels.
+	// registry to hold active subscriptions of clients to channels.
 	subs map[string]map[string]struct{}
 }
 
@@ -29,38 +30,59 @@ func newHub() *Hub {
 	}
 }
 
-var (
+const (
 	// hubShutdownSemaphoreSize limits graceful disconnects concurrency on
 	// node shutdown.
-	hubShutdownSemaphoreSize = 1000
+	hubShutdownSemaphoreSize = 128
 )
 
 // shutdown unsubscribes users from all channels and disconnects them.
-func (h *Hub) shutdown() error {
-	var wg sync.WaitGroup
-	h.mu.RLock()
+func (h *Hub) shutdown(ctx context.Context) error {
 	advice := DisconnectShutdown
-	// Limit concurrency here to prevent memory burst on shutdown.
+
+	// Limit concurrency here to prevent resource usage burst on shutdown.
 	sem := make(chan struct{}, hubShutdownSemaphoreSize)
-	for _, user := range h.users {
-		wg.Add(len(user))
-		for uid := range user {
-			cc, ok := h.conns[uid]
-			if !ok {
-				wg.Done()
-				continue
-			}
-			sem <- struct{}{}
-			go func(cc *Client) {
-				defer func() { <-sem }()
-				cc.close(advice)
-				wg.Done()
-			}(cc)
-		}
+
+	h.mu.RLock()
+	// At this moment node won't accept new client connections so we can
+	// safely copy existing clients and release lock.
+	clients := make([]*Client, 0, len(h.conns))
+	for _, client := range h.conns {
+		clients = append(clients, client)
 	}
 	h.mu.RUnlock()
-	wg.Wait()
-	return nil
+
+	closeFinishedCh := make(chan struct{}, len(clients))
+	finished := 0
+
+	if len(clients) == 0 {
+		return nil
+	}
+
+	for _, client := range clients {
+		select {
+		case sem <- struct{}{}:
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+		go func(cc *Client) {
+			defer func() { <-sem }()
+			defer func() { closeFinishedCh <- struct{}{} }()
+			cc.close(advice)
+		}(client)
+	}
+
+	for {
+		select {
+		case <-closeFinishedCh:
+			finished++
+			if finished == len(clients) {
+				return nil
+			}
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
 }
 
 func (h *Hub) disconnect(user string, reconnect bool) error {
@@ -77,7 +99,7 @@ func (h *Hub) disconnect(user string, reconnect bool) error {
 func (h *Hub) unsubscribe(user string, ch string) error {
 	userConnections := h.userConnections(user)
 	for _, c := range userConnections {
-		err := c.Unsubscribe(ch)
+		err := c.Unsubscribe(ch, false)
 		if err != nil {
 			return err
 		}
@@ -228,7 +250,7 @@ func (h *Hub) broadcastPublication(channel string, pub *Publication) error {
 				if err != nil {
 					return err
 				}
-				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewPublication(channel, data))
+				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewPublicationPush(channel, data))
 				if err != nil {
 					return err
 				}
@@ -244,7 +266,7 @@ func (h *Hub) broadcastPublication(channel string, pub *Publication) error {
 				if err != nil {
 					return err
 				}
-				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewPublication(channel, data))
+				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewPublicationPush(channel, data))
 				if err != nil {
 					return err
 				}
@@ -286,7 +308,7 @@ func (h *Hub) broadcastJoin(channel string, join *proto.Join) error {
 				if err != nil {
 					return err
 				}
-				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewJoin(channel, data))
+				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewJoinPush(channel, data))
 				if err != nil {
 					return err
 				}
@@ -302,7 +324,7 @@ func (h *Hub) broadcastJoin(channel string, join *proto.Join) error {
 				if err != nil {
 					return err
 				}
-				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewJoin(channel, data))
+				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewJoinPush(channel, data))
 				if err != nil {
 					return err
 				}
@@ -344,7 +366,7 @@ func (h *Hub) broadcastLeave(channel string, leave *proto.Leave) error {
 				if err != nil {
 					return err
 				}
-				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewLeave(channel, data))
+				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewLeavePush(channel, data))
 				if err != nil {
 					return err
 				}
@@ -360,7 +382,7 @@ func (h *Hub) broadcastLeave(channel string, leave *proto.Leave) error {
 				if err != nil {
 					return err
 				}
-				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewLeave(channel, data))
+				messageBytes, err := proto.GetPushEncoder(enc).Encode(proto.NewLeavePush(channel, data))
 				if err != nil {
 					return err
 				}

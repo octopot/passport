@@ -42,6 +42,13 @@ var (
 		Help:      "Number of unique users connected.",
 	})
 
+	buildInfoGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Namespace: metricsNamespace,
+		Subsystem: "node",
+		Name:      "build",
+		Help:      "Node build info.",
+	}, []string{"version"})
+
 	numChannelsGauge = prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
 		Subsystem: "node",
@@ -54,7 +61,7 @@ var (
 		Subsystem: "client",
 		Name:      "num_reply_errors",
 		Help:      "Number of errors in replies sent to clients.",
-	}, []string{"method"})
+	}, []string{"method", "code"})
 
 	commandDurationSummary = prometheus.NewSummaryVec(prometheus.SummaryOpts{
 		Namespace:  metricsNamespace,
@@ -93,20 +100,6 @@ var (
 		Name:      "messages_sent",
 		Help:      "Number of messages sent over specific transport.",
 	}, []string{"transport"})
-
-	transportBytesIn = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Namespace: metricsNamespace,
-		Subsystem: "transport",
-		Name:      "bytes_in",
-		Help:      "Number of bytes received over specific transport.",
-	}, []string{"transport"})
-
-	transportBytesOut = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Namespace: metricsNamespace,
-		Subsystem: "transport",
-		Name:      "bytes_out",
-		Help:      "Number of bytes sent over specific transport.",
-	}, []string{"transport"})
 )
 
 func init() {
@@ -122,6 +115,5 @@ func init() {
 	prometheus.MustRegister(apiCommandDurationSummary)
 	prometheus.MustRegister(transportConnectCount)
 	prometheus.MustRegister(transportMessagesSent)
-	prometheus.MustRegister(transportBytesIn)
-	prometheus.MustRegister(transportBytesOut)
+	prometheus.MustRegister(buildInfoGauge)
 }
