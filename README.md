@@ -1,4 +1,4 @@
-> # Passport [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Person%20Identifier%20as%20a%20Service&url=https://kamilsk.github.io/passport/&via=ikamilsk&hashtags=go,service,authentication,identification)
+> # Passport [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" height="100" src=".github/character.png">
 > [![Analytics](https://ga-beacon.appspot.com/UA-109817251-24/passport/readme?pixel)](https://kamilsk.github.io/passport/)
 > Person Identifier as a Service &mdash; your personal user tracker and auth service.
 
@@ -131,3 +131,7 @@ but major versions can be not [BC](https://en.wikipedia.org/wiki/Backward_compat
 [![@octolab](https://img.shields.io/badge/sponsor-%40octolab-blue.svg)](https://twitter.com/octolab_inc)
 
 made with ❤️ by [OctoLab](https://www.octolab.org/)
+
+[icon_twitter]:    https://img.shields.io/twitter/url/http/shields.io.svg?style=social
+
+[publish_twitter]: https://twitter.com/intent/tweet?text=Person%20Identifier%20as%20a%20Service&url=https://kamilsk.github.io/passport/&via=ikamilsk&hashtags=go,service,authentication,identification
