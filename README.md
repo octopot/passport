@@ -1,4 +1,4 @@
-> # 👮 Passport [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" height="100" src=".github/character.png">
+> # 👮 Passport [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" src=".github/character.png">
 > [![Analytics](https://ga-beacon.appspot.com/UA-109817251-24/passport/readme?pixel)](https://kamilsk.github.io/passport/)
 > Person Identifier as a Service &mdash; your personal user tracker and auth service.
 
