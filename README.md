@@ -1,12 +1,26 @@
-> # 👮 Passport [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" src=".github/character.png">
-> [![Analytics](https://ga-beacon.appspot.com/UA-109817251-24/passport/readme?pixel)](https://kamilsk.github.io/passport/)
+> # 👮 Passport [![Tweet][icon_twitter]][twitter_publish] <img align="right" width="126" src=".github/character.png">
+> [![Analytics][analytics_pixel]][page_promo]
 > Person Identifier as a Service &mdash; your personal user tracker and auth service.
 
-[![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
-[![Build Status](https://travis-ci.org/kamilsk/passport.svg?branch=master)](https://travis-ci.org/kamilsk/passport)
-[![Code Coverage](https://scrutinizer-ci.com/g/kamilsk/passport/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/passport/?branch=master)
-[![Code Quality](https://scrutinizer-ci.com/g/kamilsk/passport/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/passport/?branch=master)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Patreon][icon_patreon]](https://www.patreon.com/octolab)
+[![Build Status][icon_build]][page_build]
+[![Code Quality][icon_quality]][page_quality]
+[![Go version][icon_go_min]][page_build]
+[![Code Coverage][icon_coverage]][page_quality]
+[![Research][icon_research]](../../tree/research)
+[![License][icon_license]](LICENSE)
+
+## Roadmap
+
+- [ ] v1: [MVP][project_v1]
+  - [**September 30, 2018**][project_v1_dl]
+  - Main concepts and working prototype.
+- [ ] v2: [Notification][project_v2]
+  - [**November 30, 2018**][project_v2_dl]
+  - Notification center.
+- [ ] v3: [URL shortener and RESTful API][project_v3]
+  - [**December 31, 2018**][project_v3_dl]
+  - Authentication center.
 
 ## Quick start
 
@@ -25,17 +39,19 @@ $ make up status
 passport_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
 passport_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
 passport_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
-
 ```
 
 ## Specification
 
 ### API
 
-You can find API specification [here](env/rest.http). Also, we recommend using [Insomnia](https://insomnia.rest)
-HTTP client to work with the API - you can import data for it from the [file](env/insomnia.json).
+You can find API specification [here](env/client/rest.http). Also, we recommend using [Insomnia](https://insomnia.rest/)
+HTTP client to work with the API - you can import data for it from the [file](env/client/insomnia.json).
 
 ### CLI
+
+<details>
+<summary><strong>CLI interface</strong></summary>
 
 ```bash
 $ passport --help
@@ -55,6 +71,17 @@ Flags:
   -h, --help   help for passport
 
 Use "passport [command] --help" for more information about a command.
+```
+</details>
+
+#### Bash and Zsh completions
+
+You can find completion files [here](https://github.com/kamilsk/shared/tree/dotfiles/bash_completion.d) or
+build your own using these commands
+
+```bash
+$ passport completion bash > /path/to/bash_completion.d/passport.sh
+$ passport completion zsh  > /path/to/zsh-completions/_passport.zsh
 ```
 
 ## Installation
@@ -94,44 +121,47 @@ $ egg github.com/kamilsk/passport@^1.0.0 -- make test install
 $ egg bitbucket.org/kamilsk/passport@^1.0.0 -- make test install
 ```
 
-> [egg](https://github.com/kamilsk/egg) is an `extended go get`.
+> [egg](https://github.com/kamilsk/egg)<sup id="anchor-egg">[1](#egg)</sup> is an `extended go get`.
 
-### Bash and Zsh completions
-
-You can find completion files [here](https://github.com/kamilsk/shared/tree/dotfiles/bash_completion.d) or
-build your own using these commands
-
-```bash
-$ passport completion bash > /path/to/bash_completion.d/passport.sh
-$ passport completion zsh  > /path/to/zsh-completions/_passport.zsh
-```
-
-## Notes
-
-- brief roadmap
-  - [x] v1: MVP
-  - [ ] v2: Simple Auth
-  - [ ] v3: OAuth
-  - [ ] v4: CRUD
-  - [ ] v5: GUI
-  - [ ] Passport, SaaS
-- [research](../../tree/research)
-- tested on Go 1.9 and 1.10
-
-### Update
+## Update
 
 This application is in a state of [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) and under active
 development. [SemVer](https://semver.org/) is used for releases, and you can easily be updated within minor versions,
 but major versions can be not [BC](https://en.wikipedia.org/wiki/Backward_compatibility)-safe.
 
+<sup id="egg">1</sup> The project is still in prototyping. [↩](#anchor-egg)
+
 ---
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kamilsk/passport)
-[![@kamilsk](https://img.shields.io/badge/author-%40kamilsk-blue.svg)](https://twitter.com/ikamilsk)
-[![@octolab](https://img.shields.io/badge/sponsor-%40octolab-blue.svg)](https://twitter.com/octolab_inc)
+[![Gitter][icon_gitter]](https://gitter.im/kamilsk/passport)
+[![@kamilsk][icon_tw_author]](https://twitter.com/ikamilsk)
+[![@octolab][icon_tw_sponsor]](https://twitter.com/octolab_inc)
 
 made with ❤️ by [OctoLab](https://www.octolab.org/)
 
+[analytics_pixel]: https://ga-beacon.appspot.com/UA-109817251-24/passport/readme?pixel
+
+[icon_build]:      https://travis-ci.org/kamilsk/passport.svg?branch=master
+[icon_coverage]:   https://scrutinizer-ci.com/g/kamilsk/passport/badges/coverage.png?b=master
+[icon_gitter]:     https://badges.gitter.im/Join%20Chat.svg
+[icon_go_min]:     https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg
+[icon_license]:    https://img.shields.io/badge/license-MIT-blue.svg
+[icon_patreon]:    https://img.shields.io/badge/patreon-donate-orange.svg
+[icon_quality]:    https://scrutinizer-ci.com/g/kamilsk/passport/badges/quality-score.png?b=master
+[icon_research]:   https://img.shields.io/badge/research-in%20progress-yellow.svg
+[icon_tw_author]:  https://img.shields.io/badge/author-%40kamilsk-blue.svg
+[icon_tw_sponsor]: https://img.shields.io/badge/sponsor-%40octolab-blue.svg
 [icon_twitter]:    https://img.shields.io/twitter/url/http/shields.io.svg?style=social
 
-[publish_twitter]: https://twitter.com/intent/tweet?text=Person%20Identifier%20as%20a%20Service&url=https://kamilsk.github.io/passport/&via=ikamilsk&hashtags=go,service,authentication,identification
+[page_build]:      https://travis-ci.org/kamilsk/passport
+[page_promo]:      https://kamilsk.github.io/passport/
+[page_quality]:    https://scrutinizer-ci.com/g/kamilsk/passport/?branch=master
+
+[project_v1]:      https://github.com/kamilsk/passport/projects/2
+[project_v1_dl]:   https://github.com/kamilsk/passport/milestone/1
+[project_v2]:      https://github.com/kamilsk/passport/projects/3
+[project_v2_dl]:   https://github.com/kamilsk/passport/milestone/2
+[project_v3]:      https://github.com/kamilsk/passport/projects/4
+[project_v3_dl]:   https://github.com/kamilsk/passport/milestone/3
+
+[twitter_publish]: https://twitter.com/intent/tweet?text=Person%20Identifier%20as%20a%20Service&url=https://kamilsk.github.io/passport/&via=ikamilsk&hashtags=go,service,authentication,identification
