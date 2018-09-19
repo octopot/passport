@@ -121,23 +121,3 @@ stop-server: env
 .PHONY: log-server
 log-server: env
 	$(COMPOSE) logs -f server
-
-# ~~~
-
-.PHONY: cross-origin-up
-cross-origin-up:
-	cp -n env/cross-origin/.env{.example,} || true
-	cp -n env/cross-origin/.env .env       || true
-	docker-compose -f env/cross-origin/docker-compose.yml up -d
-
-.PHONY: cross-origin-status
-cross-origin-status:
-	cp -n env/cross-origin/.env{.example,} || true
-	cp -n env/cross-origin/.env .env       || true
-	docker-compose -f env/cross-origin/docker-compose.yml ps
-
-.PHONY: cross-origin-down
-cross-origin-down:
-	cp -n env/cross-origin/.env{.example,} || true
-	cp -n env/cross-origin/.env .env       || true
-	docker-compose -f env/cross-origin/docker-compose.yml down --volumes --rmi local

@@ -3,6 +3,8 @@ package dao
 import (
 	"database/sql"
 
+	_ "github.com/lib/pq"
+
 	"github.com/kamilsk/passport/dao/postgres"
 	"github.com/kamilsk/passport/domain"
 )

@@ -28,7 +28,7 @@ func TestApplication_Run(t *testing.T) {
 				AddCommand(...*cobra.Command)
 				Execute() error
 			} {
-				cmd := &CmdMock{}
+				cmd := &cmdMock{}
 				cmd.On("AddCommand", mock.Anything)
 				cmd.On("Execute").Return(nil)
 				return cmd
@@ -41,7 +41,7 @@ func TestApplication_Run(t *testing.T) {
 				AddCommand(...*cobra.Command)
 				Execute() error
 			} {
-				cmd := &CmdMock{}
+				cmd := &cmdMock{}
 				cmd.On("AddCommand", mock.Anything)
 				cmd.On("Execute").Return(fmt.Errorf("mocking"))
 				return cmd
@@ -54,7 +54,7 @@ func TestApplication_Run(t *testing.T) {
 				AddCommand(...*cobra.Command)
 				Execute() error
 			} {
-				cmd := &CmdMock{}
+				cmd := &cmdMock{}
 				cmd.On("AddCommand", mock.Anything)
 				cmd.On("Execute").Run(func(mock.Arguments) { panic("something unexpected") })
 				return cmd
@@ -66,10 +66,34 @@ func TestApplication_Run(t *testing.T) {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
 			buf.Reset()
-			app.Cmd = tc.cmd()
+			app.Commander = tc.cmd()
 			app.Shutdown = func(code int) { panic(assert.Equal(t, tc.expected, code)) }
-			assert.Panics(t, func() { app.Run() })
+			assert.Panics(t, func() { app.run() })
 			assert.Contains(t, buf.String(), "Version dev")
 		})
 	}
+}
+
+type cmdMock struct {
+	mock.Mock
+	commands []*cobra.Command
+}
+
+func (m *cmdMock) AddCommand(commands ...*cobra.Command) {
+	m.commands = commands
+	converted := make([]interface{}, 0, len(commands))
+	for _, cmd := range commands {
+		converted = append(converted, cmd)
+	}
+	m.Called(converted...)
+}
+
+func (m *cmdMock) Execute() error {
+	for _, cmd := range m.commands {
+		if cmd.Use == "version" {
+			cmd.Run(cmd, nil)
+			break
+		}
+	}
+	return m.Called().Error(0)
 }
