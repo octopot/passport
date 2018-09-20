@@ -18,7 +18,7 @@
 - [ ] v2: [Notification][project_v2]
   - [**November 30, 2018**][project_v2_dl]
   - Notification center.
-- [ ] v3: [URL shortener and RESTful API][project_v3]
+- [ ] v3: [Authentication][project_v3]
   - [**December 31, 2018**][project_v3_dl]
   - Authentication center.
 
