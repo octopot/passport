@@ -4,9 +4,8 @@
 
 [![Patreon][icon_patreon]](https://www.patreon.com/octolab)
 [![Build Status][icon_build]][page_build]
-[![Code Quality][icon_quality]][page_quality]
-[![Go version][icon_go_min]][page_build]
 [![Code Coverage][icon_coverage]][page_quality]
+[![Code Quality][icon_quality]][page_quality]
 [![Research][icon_research]](../../tree/research)
 [![License][icon_license]](LICENSE)
 
@@ -24,7 +23,7 @@
 
 ## Quick start
 
-Requirements: 
+Requirements:
 
 - Docker 17.09.0-ce or above
 - Docker Compose 1.16.1 or above
@@ -51,7 +50,7 @@ HTTP client to work with the API - you can import data for it from the [file](en
 ### CLI
 
 <details>
-<summary><strong>CLI interface</strong></summary>
+<summary><strong>Service command-line interface</strong></summary>
 
 ```bash
 $ passport --help
@@ -95,11 +94,12 @@ $ brew install kamilsk/tap/passport
 ### Binary
 
 ```bash
-$ export VER=1.0.0      # all available versions are on https://github.com/kamilsk/passport/releases
+$ export REQ_VER=1.0.0  # all available versions are on https://github.com/kamilsk/passport/releases
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
-$ wget -q -O passport.tar.gz \
-       https://github.com/kamilsk/passport/releases/download/"${VER}/passport_${VER}_${REQ_OS}-${REQ_ARCH}".tar.gz
+$ # wget -q -O passport.tar.gz
+$ curl -sL -o passport.tar.gz \
+       https://github.com/kamilsk/passport/releases/download/"${REQ_VER}/passport_${REQ_VER}_${REQ_OS}-${REQ_ARCH}".tar.gz
 $ tar xf passport.tar.gz -C "${GOPATH}"/bin/ && rm passport.tar.gz
 ```
 
@@ -113,11 +113,7 @@ $ docker pull kamilsk/passport:1.x
 
 ```bash
 $ egg github.com/kamilsk/passport@^1.0.0 -- make test install
-```
-
-#### Mirror
-
-```bash
+$ # or use mirror
 $ egg bitbucket.org/kamilsk/passport@^1.0.0 -- make test install
 ```
 
@@ -144,7 +140,6 @@ made with ❤️ by [OctoLab](https://www.octolab.org/)
 [icon_build]:      https://travis-ci.org/kamilsk/passport.svg?branch=master
 [icon_coverage]:   https://scrutinizer-ci.com/g/kamilsk/passport/badges/coverage.png?b=master
 [icon_gitter]:     https://badges.gitter.im/Join%20Chat.svg
-[icon_go_min]:     https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg
 [icon_license]:    https://img.shields.io/badge/license-MIT-blue.svg
 [icon_patreon]:    https://img.shields.io/badge/patreon-donate-orange.svg
 [icon_quality]:    https://scrutinizer-ci.com/g/kamilsk/passport/badges/quality-score.png?b=master
