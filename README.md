@@ -12,13 +12,13 @@
 ## Roadmap
 
 - [ ] v1: [MVP][project_v1]
-  - [**September 30, 2018**][project_v1_dl]
+  - [**Someday, 20xx**][project_v1_dl]
   - Main concepts and working prototype.
 - [ ] v2: [Notification][project_v2]
-  - [**November 30, 2018**][project_v2_dl]
+  - [**Sometime, 20xx**][project_v2_dl]
   - Notification center.
 - [ ] v3: [Authentication][project_v3]
-  - [**December 31, 2018**][project_v3_dl]
+  - [**Somehow, 20xx**][project_v3_dl]
   - Authentication center.
 
 ## Quick start
