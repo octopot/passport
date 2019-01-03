@@ -1,7 +1,7 @@
 .PHONY: tools
 tools:
 	if ! command -v easyjson > /dev/null; then \
-	    go get github.com/mailru/easyjson; \
+	    go get github.com/mailru/easyjson/...; \
 	fi
 	if ! command -v go-bindata > /dev/null; then \
 	    go get -d github.com/a-urth/go-bindata/go-bindata; \
@@ -12,18 +12,19 @@ tools:
 	    go get github.com/golang/mock/mockgen; \
 	fi
 
-.PHONY: generate
-generate: tools json mocks
-
 .PHONY: json
 json:
+	find . -name "*_easyjson.go" | grep -v /vendor/ | xargs rm || true
 	go generate -run="easyjson" ./...
 
 .PHONY: mocks
 mocks:
-	find . -name mock_*.go | grep -v ./vendor | xargs rm || true
+	find . -name "mock_*_test.go" | grep -v /vendor/ | xargs rm || true
 	go generate -run="mockgen" ./...
 
 .PHONY: static
-static: tools
-	go-bindata -o static/bindata.go -pkg static -ignore "\.go$$" -ignore "static/fixtures" static/...
+static:
+	go-bindata -o pkg/static/bindata.go -pkg static -ignore "\.go$$" -ignore "fixtures" -prefix pkg/ pkg/static/...
+
+.PHONY: generate
+generate: tools json mocks static

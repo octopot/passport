@@ -1,4 +1,6 @@
 IMAGE_VERSION := 1.x
+PACKAGE       := github.com/kamilsk/passport
+
 
 .PHONY: docker-build
 docker-build:
@@ -7,6 +9,7 @@ docker-build:
 	             -t kamilsk/passport:latest \
 	             -t quay.io/kamilsk/passport:$(IMAGE_VERSION) \
 	             -t quay.io/kamilsk/passport:latest \
+	             --build-arg PACKAGE=$(PACKAGE) \
 	             --force-rm --no-cache --pull --rm \
 	             .
 
@@ -37,9 +40,9 @@ docker-start:
 	docker run --rm -d \
 	           --env-file env/.env.example \
 	           --name passport-dev \
-	           --publish 8080:8080 \
-	           --publish 8090:8090 \
-	           --publish 8091:8091 \
+	           -p 8080:8080 \
+	           -p 8090:8090 \
+	           -p 8091:8091 \
 	           kamilsk/passport:$(IMAGE_VERSION)
 
 .PHONY: docker-logs

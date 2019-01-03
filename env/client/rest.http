@@ -1,23 +1,25 @@
-### Static
-
-GET http://localhost/vendor/fingerprint2.min.js
-
-###
-
-GET http://localhost/vendor/jquery.min.js
-
 ### API v1
 
 GET http://localhost:8080/api/v1/tracker/instruction
-Cookie: marker=41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+Cookie:       marker=41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+X-Request-ID: 10000000-2000-4000-8000-160000000000
 
 ###
 
 POST http://localhost:8080/api/v1/tracker/fingerprint
-Content-Type: application/json
-Cookie: marker=41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+Content-Type: application/x-www-form-urlencoded
+Cookie:       marker=41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+X-Request-ID: 10000000-2000-4000-8000-160000000000
 
-{"fingerprint": "ee657834d1ff745af85141252ee0e435", "metadata": [{"key": "value"}]}
+fingerprint=ee657834d1ff745af85141252ee0e435
+
+### Static
+
+GET http://localhost:8080/assets/fingerprint2.min.js
+
+###
+
+GET http://localhost:8080/assets/jquery.min.js
 
 ### Profiling
 
@@ -40,6 +42,10 @@ GET http://localhost:8090/pprof/trace
 GET http://localhost:8090/debug/pprof/
 
 ### Monitoring
+
+GET http://localhost:8091/monitoring
+
+###
 
 GET http://localhost:8091/vars
 

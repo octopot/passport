@@ -1,5 +1,9 @@
-LDFLAGS     ?= -ldflags '-s -w -X main.version=dev -X main.commit=$(shell git rev-parse --short HEAD)'
-BUILD_FILES ?= main.go build.go
+_commit     = -X main.commit=$(shell git rev-parse --short HEAD)
+_date       = -X main.date=$(shell date -u +%FT%X%Z)
+_version    = -X main.version=dev
+
+LDFLAGS     = -ldflags '-s -w $(_commit) $(_date) $(_version)'
+BUILD_FILES = main.go
 
 
 .PHONY: cmd-help
@@ -18,6 +22,10 @@ cmd-help-run:
 cmd-version:
 	go run $(LDFLAGS) $(BUILD_FILES) version
 
+.PHONY: cmd-migrate
+cmd-migrate:
+	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) up
+
 .PHONY: cmd-migrate-up
 cmd-migrate-up:
 	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) up 1
@@ -27,6 +35,10 @@ cmd-migrate-down:
 	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) down 1
 
 
+.PHONY: demo
+demo: FLAGS = --with-demo
+demo: cmd-migrate
+
 .PHONY: dev-server
 dev-server:
-	go run $(LDFLAGS) $(BUILD_FILES) run --port=8080 --with-profiler --with-monitoring
+	go run $(LDFLAGS) $(BUILD_FILES) run -H 127.0.0.1:8080 --with-profiling --with-monitoring

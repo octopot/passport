@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+
+  db:
+    image: postgres:10-alpine # https://hub.docker.com/_/postgres/
+    env_file: ../../.env
+
+  migration:
+    image: kamilsk/passport:1.x # https://hub.docker.com/r/kamilsk/passport/
+    command: [ "migrate" ]
+    depends_on:
+    - db
+    env_file: ../../.env
+    restart: on-failure
+
+  service:
+    image: kamilsk/passport:1.x # https://hub.docker.com/r/kamilsk/passport/
+    command: [ "run", "--with-profiling", "--with-monitoring" ]
+    depends_on:
+    - migration
+    env_file: ../../.env
+
+  server:
+    image: kamilsk/nginx:alpine # https://hub.docker.com/r/kamilsk/nginx/
+    depends_on:
+    - service
+    env_file: ../../.env
+    volumes:
+    - ../../etc/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ../../etc/service.conf:/etc/nginx/conf.d/default.conf:ro

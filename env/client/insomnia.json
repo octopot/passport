@@ -7,7 +7,7 @@
     {
       "_id": "wrk_9ec0947045ca495483162f3940969453",
       "created": 1519494241314,
-      "description": "",
+      "description": "👮 Person Identifier as a Service &mdash; your personal user tracker and auth service.",
       "modified": 1519494241314,
       "name": "Passport",
       "parentId": null,
@@ -18,8 +18,11 @@
       "color": null,
       "created": 1519494241332,
       "data": {
+        "api": "localhost",
         "host": "localhost",
+        "monitoring": "localhost",
         "pass": "admin",
+        "profiling": "localhost",
         "schema": "http",
         "user": "admin"
       },
