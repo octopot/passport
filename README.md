@@ -6,7 +6,7 @@
 [![Build Status][icon_build]][page_build]
 [![Code Coverage][icon_coverage]][page_quality]
 [![Code Quality][icon_quality]][page_quality]
-[![Research][icon_research]](../../tree/research)
+[![Research][icon_research]][page_research]
 [![License][icon_license]](LICENSE)
 
 ## Roadmap
@@ -21,23 +21,30 @@
   - [**Somehow, 20xx**][project_v3_dl]
   - Authentication center.
 
+## Motivation
+
+- We have to full control over our users' data and protect it from third parties.
+
 ## Quick start
 
 Requirements:
 
-- Docker 17.09.0-ce or above
-- Docker Compose 1.16.1 or above
+- Docker 18.06.0-ce or above
+- Docker Compose 1.22.0 or above
 - Go 1.9.2 or above
 - GNU Make 3.81 or above
 
 ```bash
-$ make up status
+$ make up demo status
 
-       Name                     Command               State                                  Ports
-----------------------------------------------------------------------------------------------------------------------------------
+        Name                    Command               State                          Ports
+------------------------------------------------------------------------------------------------------------------
 passport_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
 passport_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
-passport_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
+passport_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp,
+                                                              0.0.0.0:8091->8091/tcp, 0.0.0.0:8092->8092/tcp
+
+$ make help
 ```
 
 ## Specification
@@ -53,6 +60,8 @@ HTTP client to work with the API - you can import data for it from the [file](en
 <summary><strong>Service command-line interface</strong></summary>
 
 ```bash
+$ make install
+
 $ passport --help
 Passport
 
@@ -107,6 +116,8 @@ $ tar xf passport.tar.gz -C "${GOPATH}"/bin/ && rm passport.tar.gz
 
 ```bash
 $ docker pull kamilsk/passport:1.x
+# or use mirror
+$ docker pull quay.io/kamilsk/passport:1.x
 ```
 
 ### From source code
@@ -150,6 +161,7 @@ made with ❤️ by [OctoLab](https://www.octolab.org/)
 
 [page_build]:      https://travis-ci.org/kamilsk/passport
 [page_promo]:      https://kamilsk.github.io/passport/
+[page_research]:   ../../tree/research
 [page_quality]:    https://scrutinizer-ci.com/g/kamilsk/passport/?branch=master
 
 [project_v1]:      https://github.com/kamilsk/passport/projects/2

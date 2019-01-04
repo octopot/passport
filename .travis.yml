@@ -5,16 +5,18 @@ go:
 - 1.x
 - 1.9.x
 - 1.10.x
+- 1.11.x
 
 matrix:
-  allow_failures:
-  - go: master
   fast_finish: true
 
 sudo: false
 
 script:
 - make test ARGS='-timeout=1s'
+
+env:
+- META=github.com/kamilsk/passport/pkg/cmd
 
 after_success:
 - echo $TRAVIS_GO_VERSION ":" $TRAVIS_TAG
