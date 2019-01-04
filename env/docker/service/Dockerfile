@@ -31,11 +31,15 @@ COPY ./public/js/fingerprint2.min.js /usr/share/passport/
 ENV BIND=0.0.0.0 \
     HTTP_PORT=8080 \
     PROFILING_PORT=8090 \
-    MONITORING_PORT=8091
+    MONITORING_PORT=8091 \
+    GRPC_PORT=8092 \
+    GRPC_GATEWAY_PORT=8093
 
 EXPOSE ${HTTP_PORT} \
        ${PROFILING_PORT} \
-       ${MONITORING_PORT}
+       ${MONITORING_PORT} \
+       ${GRPC_PORT} \
+       ${GRPC_GATEWAY_PORT}
 
 ENTRYPOINT [ "service" ]
 CMD        [ "help", "run" ]

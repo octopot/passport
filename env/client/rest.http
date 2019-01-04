@@ -17,10 +17,6 @@ fingerprint=ee657834d1ff745af85141252ee0e435
 
 GET http://localhost:8080/assets/fingerprint2.min.js
 
-###
-
-GET http://localhost:8080/assets/jquery.min.js
-
 ### Profiling
 
 GET http://localhost:8090/pprof/cmdline

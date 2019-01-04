@@ -24,7 +24,7 @@ services:
     - ${LOCAL_SERVICE_PROFILING_PORT}:8090
     - ${LOCAL_SERVICE_MONITORING_PORT}:8091
     volumes:
-    - vendor:/usr/share/passport
+    - assets:/usr/share/passport
 
   server:
     entrypoint: |
@@ -36,7 +36,7 @@ services:
     volumes:
     - certificates:/etc/nginx/ssl
     - letsencrypt:/etc/letsencrypt
-    - vendor:/usr/share/nginx/html/vendor
+    - assets:/usr/share/nginx/html/assets
 
 volumes:
 
@@ -45,4 +45,4 @@ volumes:
   certificates: { driver: local }
   letsencrypt:  { driver: local }
 
-  vendor:       { driver: local }
+  assets:       { driver: local }

@@ -43,6 +43,8 @@ docker-start:
 	           -p 8080:8080 \
 	           -p 8090:8090 \
 	           -p 8091:8091 \
+	           -p 8092:8092 \
+	           -p 8093:8093 \
 	           kamilsk/passport:$(IMAGE_VERSION)
 
 .PHONY: docker-logs
