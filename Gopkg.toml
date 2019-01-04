@@ -45,6 +45,10 @@ required = [
   branch = "master"
 
 [[constraint]]
+  name = "github.com/rs/cors"
+  version = "^1.6.0"
+
+[[constraint]]
   name = "github.com/rubenv/sql-migrate"
   branch = "master"
 

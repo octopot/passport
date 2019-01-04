@@ -6,7 +6,7 @@ config:
     open: 1
     lifetime: 0s
   grpc:
-    interface: ""
+    interface: 127.0.0.1:8092
     timeout: 0s
     token: '***'
   migration:
@@ -27,4 +27,5 @@ config:
     read-header-timeout: 1s
     write-timeout: 1s
     idle-timeout: 1s
+    base-url: http://localhost/
   service: {}

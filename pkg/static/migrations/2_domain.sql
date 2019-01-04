@@ -1,16 +1,21 @@
 -- +migrate Up
 
-CREATE TABLE "fingerprint"
+CREATE DOMAIN "fingerprint" AS TEXT
+  CHECK (
+      length(VALUE) >= 32 AND
+      length(VALUE) <= 64
+    );
+
+CREATE TABLE "event"
 (
-  "id"         BIGSERIAL PRIMARY KEY,
-  "marker"     UUID        NOT NULL,
-  "value"      VARCHAR(64) NOT NULL,
-  "counter"    BIGINT      NOT NULL DEFAULT 1,
-  "created_at" TIMESTAMP   NOT NULL DEFAULT now(),
-  "updated_at" TIMESTAMP   NULL     DEFAULT NULL,
-  UNIQUE ("marker", "value")
+  "id"          BIGSERIAL PRIMARY KEY,
+  "session"     UUID        NOT NULL,
+  "fingerprint" fingerprint NOT NULL,
+  "created_at"  TIMESTAMP   NOT NULL DEFAULT now()
 );
 
 -- +migrate Down
 
-DROP TABLE "fingerprint";
+DROP TABLE "event";
+
+DROP DOMAIN "fingerprint";

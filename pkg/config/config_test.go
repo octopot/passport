@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/kamilsk/click/pkg/config"
+	. "github.com/kamilsk/passport/pkg/config"
 	"github.com/stretchr/testify/assert"
 	yaml "gopkg.in/yaml.v2"
 )

@@ -91,18 +91,14 @@
   version = "v1.0"
 
 [[projects]]
-  digest = "1:edf2d9a4fec19ef1077b800989846ebd7525d08a6a28de9205573c9cf6e43b94"
-  name = "github.com/kamilsk/click"
-  packages = ["pkg/config"]
-  pruneopts = "NUT"
-  revision = "33a2f9a9b25ce521169d0fa0a948ffe1d9856b46"
-  version = "2.2.3"
-
-[[projects]]
   branch = "master"
-  digest = "1:c9fc94bb9d62bd20d41bf9966b6e1ee2eee7efb71e60d605087a55c60c3513e7"
+  digest = "1:09196f8417b28774ee5463e5a1f26f3ab89848170565539d84f478398efeefe0"
   name = "github.com/kamilsk/go-kit"
-  packages = ["pkg/config"]
+  packages = [
+    "pkg/config",
+    "pkg/fn",
+    "pkg/strings",
+  ]
   pruneopts = "NUT"
   revision = "bcfc2c1707dec83bb1aad27c5547093a90be5efc"
 
@@ -201,7 +197,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4791f56cd90cffca3f686f9f7261051c51dec6858bca088da1f6032de092d993"
+  digest = "1:4340e7fba4a17b3c5c8c874698eae0db8573668bfa541903bd6a654915d6b2bb"
   name = "github.com/prometheus/common"
   packages = [
     "expfmt",
@@ -209,7 +205,7 @@
     "model",
   ]
   pruneopts = "NUT"
-  revision = "c47d5b9a16eaeecf96a088a694da84d55a54d4a6"
+  revision = "b1c43a6df3aedba268353d940b5974f05037ed5c"
 
 [[projects]]
   branch = "master"
@@ -222,7 +218,15 @@
     "xfs",
   ]
   pruneopts = "NUT"
-  revision = "14fa7590c24d4615893b68e22fce3b3489689f65"
+  revision = "b1a0a9a36d7453ba0f62578b99712f3a6c5f82d1"
+
+[[projects]]
+  digest = "1:f250ca51e5b9215bc2df18f92060a9a835e9f85ab18ebbba0e1a6ef1f8fcdbfe"
+  name = "github.com/rs/cors"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "9a47f48565a795472d43519dd49aac781f3034fb"
+  version = "v1.6.0"
 
 [[projects]]
   branch = "master"
@@ -361,14 +365,16 @@
     "github.com/go-chi/chi/middleware",
     "github.com/golang/mock/gomock",
     "github.com/golang/mock/mockgen/model",
-    "github.com/kamilsk/click/pkg/config",
     "github.com/kamilsk/go-kit/pkg/config",
+    "github.com/kamilsk/go-kit/pkg/fn",
+    "github.com/kamilsk/go-kit/pkg/strings",
     "github.com/lib/pq",
     "github.com/mailru/easyjson/gen",
     "github.com/mailru/easyjson/jlexer",
     "github.com/mailru/easyjson/jwriter",
     "github.com/pkg/errors",
     "github.com/prometheus/client_golang/prometheus/promhttp",
+    "github.com/rs/cors",
     "github.com/rubenv/sql-migrate",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",

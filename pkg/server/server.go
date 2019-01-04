@@ -1,7 +1,6 @@
 package server
 
 import (
-	"encoding/json"
 	"html/template"
 	"io"
 	"io/ioutil"
@@ -9,19 +8,17 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/kamilsk/passport/pkg/config"
 	"github.com/kamilsk/passport/pkg/errors"
 	"github.com/kamilsk/passport/pkg/static"
 	"github.com/kamilsk/passport/pkg/transfer/api/v1/tracker"
 )
 
-const (
-	// MarkerKey is used to find and store required cookie value.
-	MarkerKey = "marker"
-)
+const sessionKey = "session"
 
 // New returns a new instance of Passport server.
-func New(baseURL string, service Service) *Server {
-	u, err := url.Parse(baseURL)
+func New(cnf config.ServerConfig, service Service) *Server {
+	u, err := url.Parse(cnf.BaseURL)
 	if err != nil {
 		panic(err)
 	}
@@ -37,25 +34,25 @@ type Server struct {
 
 // GetTrackerInstructionV1 is responsible for `GET /api/v1/tracker/instruction` request handling.
 func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Request) {
-	cookie, err := req.Cookie(MarkerKey)
+	cookie, err := req.Cookie(sessionKey)
 	if err != nil || !cookie.HttpOnly || !cookie.Secure {
-		cookie = &http.Cookie{Name: MarkerKey, Secure: true, HttpOnly: true}
+		cookie = &http.Cookie{Name: sessionKey, Secure: true, HttpOnly: true}
 	}
 
-	response := s.service.HandleTrackerInstructionV1(tracker.InstructionRequest{EncryptedMarker: cookie.Value})
+	response := s.service.HandleTrackerInstructionV1(tracker.InstructionRequest{EncryptedSession: cookie.Value})
 	if response.Error != nil {
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedMarker
+	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedSession
 	http.SetCookie(rw, cookie)
 	rw.Header().Set("Content-Type", "application/javascript")
 	rw.WriteHeader(http.StatusOK)
 
 	endpoint := *s.baseURL
 	endpoint.Path = "/api/v1/tracker/fingerprint"
-	s.template.Execute(rw, struct {
+	_ = s.template.Execute(rw, struct {
 		Endpoint  string
 		Limit     uint8
 		Threshold uint8
@@ -72,32 +69,33 @@ func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Reque
 
 // PostTrackerFingerprintV1 is responsible for `POST /api/v1/tracker/fingerprint` request handling.
 func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Request) {
-	cookie, err := req.Cookie(MarkerKey)
+	defer func() {
+		_, _ = io.Copy(ioutil.Discard, req.Body)
+		_ = req.Body.Close()
+	}()
+	cookie, err := req.Cookie(sessionKey)
 	if err != nil {
 		// issue #19: Safari sends cookies in `demo-cross-origin`-mode, but doesn't send it in production
 		log.Printf("\n\n[CRITICAL] cookie not found, skip this request (%q)\n\n", req.UserAgent())
 		rw.WriteHeader(http.StatusAccepted)
-		io.Copy(ioutil.Discard, req.Body)
-		req.Body.Close()
+		_, _ = io.Copy(ioutil.Discard, req.Body)
+		_ = req.Body.Close()
 		return
 	}
 	if !cookie.HttpOnly || !cookie.Secure {
 		// issue #22: prevent cookie manipulation
 		log.Printf("\n\n[CRITICAL] cookie is not safe, skip this request (%+v)\n\n", *cookie)
-		io.Copy(ioutil.Discard, req.Body)
-		req.Body.Close()
+		_, _ = io.Copy(ioutil.Discard, req.Body)
+		_ = req.Body.Close()
 		return
 	}
 
-	defer req.Body.Close()
-	request := tracker.FingerprintRequest{EncryptedMarker: cookie.Value, Header: req.Header}
-	if err := json.NewDecoder(req.Body).Decode(&request.Payload); err != nil {
+	request := tracker.FingerprintRequest{EncryptedSession: cookie.Value, Header: req.Header}
+	if err := req.ParseForm(); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
-		io.Copy(ioutil.Discard, req.Body)
-		req.Body.Close()
 		return
 	}
-	req.Body.Close()
+	request.Payload.Fingerprint = req.PostFormValue("fingerprint")
 
 	response := s.service.HandleTrackerFingerprintV1(request)
 	if response.Error != nil {
@@ -111,10 +109,6 @@ func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Requ
 		return
 	}
 
-	if response.Fingerprint.UpdatedAt.Valid {
-		rw.WriteHeader(http.StatusOK)
-		return
-	}
 	rw.WriteHeader(http.StatusCreated)
 }
 

@@ -13,6 +13,7 @@ type ApplicationConfig struct {
 		CPUs int `json:"cpus" xml:"cpus" yaml:"cpus"`
 
 		DatabaseConfig   `json:"db"         xml:"db"         yaml:"db"`
+		GRPCConfig       `json:"grpc"       xml:"grpc"       yaml:"grpc"`
 		MigrationConfig  `json:"migration"  xml:"migration"  yaml:"migration"`
 		MonitoringConfig `json:"monitoring" xml:"monitoring" yaml:"monitoring"`
 		ProfilingConfig  `json:"profiling"  xml:"profiling"  yaml:"profiling"`
@@ -38,6 +39,13 @@ func (cnf *DatabaseConfig) DriverName() string {
 		cnf.dsn, _ = url.Parse(string(cnf.DSN))
 	}
 	return cnf.dsn.Scheme
+}
+
+// GRPCConfig contains configuration related to gRPC server.
+type GRPCConfig struct {
+	Interface string        `json:"interface" xml:"interface" yaml:"interface"`
+	Timeout   time.Duration `json:"timeout"   xml:"timeout"   yaml:"timeout"`
+	Token     config.Secret `json:"token"     xml:"token"     yaml:"token"`
 }
 
 // MigrationConfig contains configuration related to migrations.
@@ -68,6 +76,7 @@ type ServerConfig struct {
 	ReadHeaderTimeout time.Duration `json:"read-header-timeout" xml:"read-header-timeout" yaml:"read-header-timeout"`
 	WriteTimeout      time.Duration `json:"write-timeout"       xml:"write-timeout"       yaml:"write-timeout"`
 	IdleTimeout       time.Duration `json:"idle-timeout"        xml:"idle-timeout"        yaml:"idle-timeout"`
+	BaseURL           string        `json:"base-url"            xml:"base-url"            yaml:"base-url"`
 }
 
 // ServiceConfig contains configuration related to the service.

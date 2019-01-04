@@ -1,11 +1,15 @@
 package service
 
-import "github.com/kamilsk/passport/pkg/domain"
+import (
+	"context"
+
+	"github.com/kamilsk/passport/pkg/domain"
+)
 
 // Storage defines the behavior of Data Access Object.
 type Storage interface {
+	// StoreFingerprint takes a user fingerprint and stores it.
+	StoreFingerprint(context.Context, domain.Fingerprint) (domain.Fingerprint, error)
 	// UUID returns a new generated unique identifier.
-	UUID() (domain.UUID, error)
-	// TakeFingerprint takes a user fingerprint and stores it.
-	TakeFingerprint(domain.Fingerprint) (domain.Fingerprint, error)
+	UUID(context.Context) (domain.UUID, error)
 }

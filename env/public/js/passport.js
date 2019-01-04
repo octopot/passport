@@ -26,10 +26,12 @@
         counter++;
 
         // TODO https://github.com/github/fetch
+        let data = new FormData();
+        data.append('fingerprint', payload.fingerprint);
         fetch(
             new Request(
                 config.endpoint,
-                {method: 'POST', body: payload, credentials: 'include'}
+                {method: 'POST', body: data, credentials: 'include'}
             )
         )
             .then(response => {
