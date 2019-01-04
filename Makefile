@@ -1,10 +1,11 @@
 OPEN_BROWSER       =
-SUPPORTED_VERSIONS = 1.9 1.10 latest
+SUPPORTED_VERSIONS = 1.9 1.10 1.11 latest
 
 
-include makes/env.mk
-include makes/docker.mk
-include makes/local.mk
+include env/.env.example
+include env/makefiles/env.mk
+include env/makefiles/docker.mk
+include env/makefiles/local.mk
 include env/cmd.mk
 include env/docker.mk
 include env/docker-compose.mk
@@ -24,6 +25,15 @@ code-quality-check: docker-tool-gometalinter
 code-quality-report:
 	time make code-quality-check | tail +7 | tee report.out
 
+.PHONY: goimports-check
+goimports-check:
+	@(goimports -d ./cmd/ ./pkg/ \
+	 | grep '.go$$' \
+	 | grep -v mock_ \
+	 | grep -v _easyjson \
+	 | grep -v bindata \
+	 | awk '{print $$4}')
+
 
 .PHONY: dev
-dev: up stop-server stop-service clear status dev-server
+dev: up stop-server stop-service clear status demo dev-server

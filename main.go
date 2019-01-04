@@ -7,7 +7,7 @@ import (
 	"runtime"
 
 	"github.com/kamilsk/passport/cmd"
-	"github.com/kamilsk/passport/errors"
+	"github.com/kamilsk/passport/pkg/errors"
 	"github.com/spf13/cobra"
 )
 

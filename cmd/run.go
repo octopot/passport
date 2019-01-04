@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/kamilsk/passport/dao"
-	"github.com/kamilsk/passport/server"
-	"github.com/kamilsk/passport/server/router/chi"
-	"github.com/kamilsk/passport/service"
+	"github.com/kamilsk/passport/pkg/dao"
+	"github.com/kamilsk/passport/pkg/server"
+	"github.com/kamilsk/passport/pkg/server/router/chi"
+	"github.com/kamilsk/passport/pkg/service"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -24,10 +24,10 @@ var runCmd = &cobra.Command{
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 
 		if asBool(cmd.Flag("with-profiler").Value) {
-			go startProfiler()
+			go startProfiler(cmd.Flag("bind").Value.String() + ":" + cmd.Flag("profiling-port").Value.String())
 		}
 		if asBool(cmd.Flag("with-monitoring").Value) {
-			go startMonitoring()
+			go startMonitoring(cmd.Flag("bind").Value.String() + ":" + cmd.Flag("monitoring-port").Value.String())
 		}
 
 		handler := chi.NewRouter(
@@ -54,6 +54,8 @@ func init() {
 		func() error { return v.BindEnv("max_cpus") },
 		func() error { return v.BindEnv("bind") },
 		func() error { return v.BindEnv("port") },
+		func() error { return v.BindEnv("profiling_port") },
+		func() error { return v.BindEnv("monitoring_port") },
 		func() error { return v.BindEnv("read_timeout") },
 		func() error { return v.BindEnv("read_header_timeout") },
 		func() error { return v.BindEnv("write_timeout") },
@@ -64,11 +66,13 @@ func init() {
 		v.SetDefault("max_cpus", 1)
 		v.SetDefault("bind", "127.0.0.1")
 		v.SetDefault("port", 80)
+		v.SetDefault("profiling_port", 8090)
+		v.SetDefault("monitoring_port", 8091)
 		v.SetDefault("read_timeout", time.Duration(0))
 		v.SetDefault("read_header_timeout", time.Duration(0))
 		v.SetDefault("write_timeout", time.Duration(0))
 		v.SetDefault("idle_timeout", time.Duration(0))
-		v.SetDefault("base_url", "http://localhost/")
+		v.SetDefault("base_url", "http://127.0.0.1/")
 	}
 	{
 		runCmd.Flags().Int("cpus", v.GetInt("max_cpus"),
@@ -77,6 +81,10 @@ func init() {
 			"interface to which the server will bind")
 		runCmd.Flags().Int("port", v.GetInt("port"),
 			"port on which the server will listen")
+		runCmd.Flags().Int("profiling-port", v.GetInt("profiling_port"),
+			"port on which the server will listen for profiling")
+		runCmd.Flags().Int("monitoring-port", v.GetInt("monitoring_port"),
+			"port on which the server will listen for monitoring")
 		runCmd.Flags().Duration("read-timeout", v.GetDuration("read_timeout"),
 			"maximum duration for reading the entire request, including the body")
 		runCmd.Flags().Duration("read-header-timeout", v.GetDuration("read_header_timeout"),
@@ -95,19 +103,19 @@ func init() {
 	db(runCmd)
 }
 
-func startProfiler() {
+func startProfiler(addr string) {
 	mux := &http.ServeMux{}
 	mux.HandleFunc("/pprof/cmdline", pprof.Cmdline)
 	mux.HandleFunc("/pprof/profile", pprof.Profile)
 	mux.HandleFunc("/pprof/symbol", pprof.Symbol)
 	mux.HandleFunc("/pprof/trace", pprof.Trace)
-	mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
-	_ = http.ListenAndServe(":8090", mux)
+	mux.HandleFunc("/debug/pprof/", pprof.Index)
+	_ = http.ListenAndServe(addr, mux)
 }
 
-func startMonitoring() {
+func startMonitoring(addr string) {
 	mux := &http.ServeMux{}
 	expvar.Handler()
 	mux.Handle("/vars", expvar.Handler())
-	_ = http.ListenAndServe(":8091", mux)
+	_ = http.ListenAndServe(addr, mux)
 }

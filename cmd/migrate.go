@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kamilsk/passport/dao"
-	"github.com/kamilsk/passport/static"
-	"github.com/rubenv/sql-migrate"
+	"github.com/kamilsk/passport/pkg/dao"
+	"github.com/kamilsk/passport/pkg/static"
+	migrate "github.com/rubenv/sql-migrate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

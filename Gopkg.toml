@@ -1,7 +1,20 @@
 required = [
-  "github.com/kamilsk/go-kit/pkg/config",
+  # generated content
+  "github.com/golang/mock/gomock",
+  "github.com/golang/mock/mockgen/model",
+  "github.com/mailru/easyjson/gen",
+  "github.com/mailru/easyjson/jlexer",
+  "github.com/mailru/easyjson/jwriter",
+
+  # future deps
+  "github.com/ghodss/yaml",
   "github.com/prometheus/client_golang/prometheus/promhttp",
+  "gopkg.in/DATA-DOG/go-sqlmock.v1",
 ]
+
+[[constraint]]
+  name = "github.com/ghodss/yaml"
+  branch = "master"
 
 [[constraint]]
   name = "github.com/go-chi/chi"
@@ -17,6 +30,10 @@ required = [
 
 [[constraint]]
   name = "github.com/lib/pq"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/mailru/easyjson"
   branch = "master"
 
 [[constraint]]
@@ -42,6 +59,14 @@ required = [
 [[constraint]]
   name = "github.com/stretchr/testify"
   version = "^1.2.0"
+
+[[constraint]]
+  name = "gopkg.in/DATA-DOG/go-sqlmock.v1"
+  version = "^1.3.0"
+
+[[override]]
+  name = "gopkg.in/yaml.v2"
+  version = "v2"
 
 [prune]
   go-tests = true

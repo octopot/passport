@@ -1,7 +1,7 @@
 (function (context, signer, sender, logger, config){
     'use strict';
     var ctx = (context.Passport = context.Passport || {'debug': config.debug}),
-        payload = {'fingerprint': undefined, 'metadata': undefined},
+        payload = {'fingerprint': undefined},
         counter = 0, synced = false, lock = false;
 
     function log(msg) { ctx.debug && logger(config.prefix + msg); }
@@ -33,7 +33,6 @@
             success: function () {
                 synced = true;
                 ctx.fingerprint = payload.fingerprint;
-                ctx.metadata = payload.metadata;
                 log('sender has synced a payload');
             },
             complete: function () { lock = false; log(informer + ' has sent a notification to ' + config.endpoint); }
@@ -42,12 +41,11 @@
 
     var corrector = setInterval((function () {
         var threshold = 1;
-        new signer().get(function(result, components) { payload.fingerprint = result; payload.metadata = components; });
+        new signer().get(function(result, components) { payload.fingerprint = result; });
         return function () {
             new signer().get(function(result, components) {
                 if (result !== payload.fingerprint) {
                     payload.fingerprint = result;
-                    payload.metadata = components;
                     threshold = 0;
                     log('corrector has made a correction');
                 }

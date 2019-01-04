@@ -26,6 +26,14 @@
   version = "v1.4.7"
 
 [[projects]]
+  branch = "master"
+  digest = "1:0b86d0877c1b5a5d518f5bb51d7a27878f0c2a1e05dd96ab8790dee49d4eb5bf"
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "c7ce16629ff4cd059ed96ed06419dd3856fd3577"
+
+[[projects]]
   digest = "1:c38144c2e2d2cf5592dc55f08f69b491b15f4449c54e293710fe19ea0874fa90"
   name = "github.com/go-chi/chi"
   packages = [
@@ -38,11 +46,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2e292c0e36117b617c4df3f10ac9a7fe05e3c90bf057f1e61867c913d866e0c9"
+  digest = "1:97df736bcaf8bf2f4e96998fc30a462e4f67448ba2c260bc606ecc4121f0cba1"
   name = "github.com/golang/mock"
-  packages = ["gomock"]
+  packages = [
+    "gomock",
+    "mockgen/model",
+  ]
   pruneopts = "NUT"
-  revision = "8a44ef6e8be577e050008c7886f24fc705d709fb"
+  revision = "e698a2ea17fee71b248fc2bba82fc544c2017f93"
 
 [[projects]]
   digest = "1:97df918963298c287643883209a2c3f642e6593379f97ab400c2a2e219ab647d"
@@ -80,6 +91,14 @@
   version = "v1.0"
 
 [[projects]]
+  digest = "1:edf2d9a4fec19ef1077b800989846ebd7525d08a6a28de9205573c9cf6e43b94"
+  name = "github.com/kamilsk/click"
+  packages = ["pkg/config"]
+  pruneopts = "NUT"
+  revision = "33a2f9a9b25ce521169d0fa0a948ffe1d9856b46"
+  version = "2.2.3"
+
+[[projects]]
   branch = "master"
   digest = "1:c9fc94bb9d62bd20d41bf9966b6e1ee2eee7efb71e60d605087a55c60c3513e7"
   name = "github.com/kamilsk/go-kit"
@@ -107,6 +126,20 @@
   version = "v1.8.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:27709e1b4d50eb443e1c41cb8393cee3be80a48400edfc98c8098752882a4d8c"
+  name = "github.com/mailru/easyjson"
+  packages = [
+    ".",
+    "buffer",
+    "gen",
+    "jlexer",
+    "jwriter",
+  ]
+  pruneopts = "NUT"
+  revision = "60711f1a8329503b04e1c88535f419d0bb440bff"
+
+[[projects]]
   digest = "1:5985ef4caf91ece5d54817c11ea25f182697534f8ae6521eadcd628c142ac4b6"
   name = "github.com/matttproud/golang_protobuf_extensions"
   packages = ["pbutil"]
@@ -132,11 +165,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:75386ee8a7a1b23cef8dc0d18f689834706742fd18c3046b6d7186a4e9c18c37"
+  digest = "1:14715f705ff5dfe0ffd6571d7d201dd8e921030f8070321a79380d8ca4ec1a24"
   name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "059132a15dd08d6704c67711dae0cf35ab991756"
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
 
 [[projects]]
   digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
@@ -148,7 +181,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a8512715947d49f24e6aa2d0fdd06f46bdd8d2e792517ba0ac95a2c089eaae28"
+  digest = "1:f21cfb17d6cf115cbee67286fa71990ce794576c70d19a85552b117e1b163198"
   name = "github.com/prometheus/client_golang"
   packages = [
     "prometheus",
@@ -156,7 +189,7 @@
     "prometheus/promhttp",
   ]
   pruneopts = "NUT"
-  revision = "abad2d1bd44235a26707c172eab6bca5bf2dbad3"
+  revision = "fb3d5cb2ad5789367093b409855a3937d651b572"
 
 [[projects]]
   branch = "master"
@@ -168,7 +201,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:06375f3b602de9c99fa99b8484f0e949fd5273e6e9c6592b5a0dd4cd9085f3ea"
+  digest = "1:4791f56cd90cffca3f686f9f7261051c51dec6858bca088da1f6032de092d993"
   name = "github.com/prometheus/common"
   packages = [
     "expfmt",
@@ -176,11 +209,11 @@
     "model",
   ]
   pruneopts = "NUT"
-  revision = "7e9e6cabbd393fc208072eedef99188d0ce788b6"
+  revision = "c47d5b9a16eaeecf96a088a694da84d55a54d4a6"
 
 [[projects]]
   branch = "master"
-  digest = "1:102dea0c03a915acfc634b7c67f2662012b5483b56d9025e33f5188e112759b6"
+  digest = "1:21971c48d2d34cf633e1898e60bb968eb046a42010ebeb73c8733d7b610cbf59"
   name = "github.com/prometheus/procfs"
   packages = [
     ".",
@@ -189,29 +222,29 @@
     "xfs",
   ]
   pruneopts = "NUT"
-  revision = "185b4288413d2a0dd0806f78c90dde719829e5ae"
+  revision = "14fa7590c24d4615893b68e22fce3b3489689f65"
 
 [[projects]]
   branch = "master"
-  digest = "1:b17429fda5090115e1c1e3bacde0d01ddec96008cbd3f43df994ccbfff05bcab"
+  digest = "1:6c9ffc8e817fe638d8169ceadc7bb32b12973ff953c2e686d4ac2a487024a6b2"
   name = "github.com/rubenv/sql-migrate"
   packages = [
     ".",
     "sqlparse",
   ]
   pruneopts = "NUT"
-  revision = "ba2c6a7295c59448dbc195cef2f41df5163b3892"
+  revision = "5a8808c14925f69d2228981db113f672ad047e69"
 
 [[projects]]
-  digest = "1:330e9062b308ac597e28485699c02223bd052437a6eed32a173c9227dcb9d95a"
+  digest = "1:10dad358673cf6e0ee07c2515cc5776a2b11f4adedf647f397739de850c1e3d7"
   name = "github.com/spf13/afero"
   packages = [
     ".",
     "mem",
   ]
   pruneopts = "NUT"
-  revision = "d40851caa0d747393da1ffb28f7f9d8b4eeffebd"
-  version = "v1.1.2"
+  revision = "a5d6946387efe7d64d09dcba68cdd523dc1273a3"
+  version = "v1.2.0"
 
 [[projects]]
   digest = "1:c5e6b121ef3d2043505edaf4c80e5a008cec2513dc8804795eb0479d1555bcf7"
@@ -223,11 +256,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:62caa436b82f9045674f41ac847d526df121b6583b0cc904c2172b586acef4e3"
+  digest = "1:25aa47e530aa7450b2a0b177fc6bc30b09248cfbb853788b90d7f8f247f80706"
   name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "fe5e611709b0c57fa4a89136deaa8e1d4004d053"
+  revision = "d2d81d9a96e23f0255397222bb0b4e3165e492dc"
 
 [[projects]]
   digest = "1:f29f83301ed096daed24a90f4af591b7560cb14b9cc3e1827abbf04db7269ab5"
@@ -246,12 +279,12 @@
   version = "v1.0.3"
 
 [[projects]]
-  digest = "1:9caed8c7c05e8927f5bc6eec5698119b2b63a7cf304effc6c9b818bc864a10d3"
+  digest = "1:e11ca20a245c80885b5777d7918a2a57d464556f3f1a61be5524e3972eea7ca2"
   name = "github.com/spf13/viper"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "2c12c60302a5a0e62ee102ca9bc996277c2f64f5"
-  version = "v1.2.1"
+  revision = "6d33b5a963d922d182c91e8a1c88d81fd150cfd4"
+  version = "v1.3.1"
 
 [[projects]]
   digest = "1:60a46e2410edbf02b419f833372dd1d24d7aa1b916a990a7370e792fada1eadd"
@@ -274,19 +307,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
-  name = "golang.org/x/net"
-  packages = ["context"]
-  pruneopts = "NUT"
-  revision = "a544f70c90f196e50d198126db0c4cb2b562fec0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:9bd6854e281142fd6b6361929b62d379459d3e1aa7a662192e0d459245c89940"
+  digest = "1:ca6c6c91837d9d0349d94e79e801c7db3462ba82acecbe5457cbbeca56d8b197"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "NUT"
-  revision = "3a76605856fddce5718553cbb8bd50ca492a7274"
+  revision = "82a175fd1598e8a172e58ebdf5ed262bb29129e5"
 
 [[projects]]
   digest = "1:8029e9743749d4be5bc9f7d42ea1659471767860f0cdc34d37c3111bd308a295"
@@ -304,30 +329,44 @@
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:05eff2c4f2ce868b5c9ced8b96607201155a812920eac4d30a85b6b9b72338ce"
+  digest = "1:4fe5671ee9615984167403a07ea67e0cbb7396f3ab335294ef767ac79b972ffc"
+  name = "gopkg.in/DATA-DOG/go-sqlmock.v1"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "d76b18b42f285b792bf985118980ce9eacea9d10"
+  version = "v1.3.0"
+
+[[projects]]
+  digest = "1:1bfe1fa433123b451bb1a2a1a5d094322821b9463f5bf8eade67e71d7532e3d0"
   name = "gopkg.in/gorp.v1"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "c87af80f3cc5036b55b83d77171e156791085e2e"
-  version = "v1.7.1"
+  revision = "6a667da9c028871f98598d85413e3fc4c6daa52e"
+  version = "v1.7.2"
 
 [[projects]]
-  digest = "1:7c95b35057a0ff2e19f707173cc1a947fa43a6eb5c4d300d196ece0334046082"
+  digest = "1:18108594151654e9e696b27b181b953f9a90b16bf14d253dd1b397b025a1487f"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/ghodss/yaml",
     "github.com/go-chi/chi",
     "github.com/go-chi/chi/middleware",
     "github.com/golang/mock/gomock",
+    "github.com/golang/mock/mockgen/model",
+    "github.com/kamilsk/click/pkg/config",
     "github.com/kamilsk/go-kit/pkg/config",
     "github.com/lib/pq",
+    "github.com/mailru/easyjson/gen",
+    "github.com/mailru/easyjson/jlexer",
+    "github.com/mailru/easyjson/jwriter",
     "github.com/pkg/errors",
     "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/rubenv/sql-migrate",
@@ -335,6 +374,8 @@
     "github.com/spf13/viper",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/mock",
+    "gopkg.in/DATA-DOG/go-sqlmock.v1",
+    "gopkg.in/yaml.v2",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
