@@ -11,12 +11,12 @@
 
 ## Roadmap
 
-- [ ] v1: [MVP][project_v1]
-  - [**Someday, 20xx**][project_v1_dl]
+- [x] v1: [MVP][project_v1]
+  - [**January 5, 2019**][project_v1_dl]
   - Main concepts and working prototype.
-- [ ] v2: [Notification][project_v2]
+- [ ] v2: [Tracking][project_v2]
   - [**Sometime, 20xx**][project_v2_dl]
-  - Notification center.
+  - Tracking center.
 - [ ] v3: [Authentication][project_v3]
   - [**Somehow, 20xx**][project_v3_dl]
   - Authentication center.
@@ -37,12 +37,12 @@ Requirements:
 ```bash
 $ make up demo status
 
-        Name                    Command               State                          Ports
-------------------------------------------------------------------------------------------------------------------
+       Name                     Command               State                           Ports
+-------------------------------------------------------------------------------------------------------------------
 passport_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
-passport_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
-passport_service_1   passport run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp,
-                                                              0.0.0.0:8091->8091/tcp, 0.0.0.0:8092->8092/tcp
+passport_server_1    /bin/sh -c echo $BASIC_USE ...   Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
+passport_service_1   service run --with-profili ...   Up      0.0.0.0:8080->8080/tcp, 0.0.0.0:8090->8090/tcp,
+                                                              0.0.0.0:8091->8091/tcp, 8092/tcp, 8093/tcp
 
 $ make help
 ```
