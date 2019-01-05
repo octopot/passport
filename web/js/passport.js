@@ -26,8 +26,7 @@
         counter++;
 
         // TODO https://github.com/github/fetch
-        let data = new FormData();
-        data.append('fingerprint', payload.fingerprint);
+        let data = new URLSearchParams(payload);
         fetch(
             new Request(
                 config.endpoint,
@@ -35,7 +34,7 @@
             )
         )
             .then(response => {
-                if (response.status === 200) {
+                if (response.status >= 200 && response.status < 300) {
                     synced = true;
                     ctx.fingerprint = payload.fingerprint;
                     log('sender has synced a payload');
@@ -45,19 +44,6 @@
                 lock = false;
                 log(informer + ' has sent a notification to ' + config.endpoint);
             });
-        // sender({
-        //     type: 'POST',
-        //     url: config.endpoint,
-        //     data: JSON.stringify(payload),
-        //     contentType: 'application/json; charset=utf-8',
-        //     xhrFields: { withCredentials: true },
-        //     success: function () {
-        //         synced = true;
-        //         ctx.fingerprint = payload.fingerprint;
-        //         log('sender has synced a payload');
-        //     },
-        //     complete: function () { lock = false; log(informer + ' has sent a notification to ' + config.endpoint); }
-        // });
     }
 
     let corrector = setInterval((function () {

@@ -23,7 +23,7 @@ var (
 		"read_header_timeout": time.Duration(0),
 		"write_timeout":       time.Duration(0),
 		"idle_timeout":        time.Duration(0),
-		"base_url":            "http://localhost/",
+		"base_url":            "http://localhost:8080/",
 		"dsn":                 "postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable",
 		"open_conn":           1,
 		"idle_conn":           1,

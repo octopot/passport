@@ -18,7 +18,10 @@ func NewRouter(api router.Server) http.Handler {
 	r.Use(middleware.Logger)
 
 	r.Route("/api/v1/tracker", func(r chi.Router) {
-		r.Use(cors.New(cors.Options{AllowCredentials: true}).Handler)
+		r.Use(cors.New(cors.Options{
+			AllowOriginFunc:  func(origin string) bool { return true },
+			AllowCredentials: true,
+		}).Handler)
 		r.Route("/instruction", func(r chi.Router) {
 			r.Use(middleware.NoCache)
 			r.Get("/", api.GetTrackerInstructionV1)

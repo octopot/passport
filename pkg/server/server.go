@@ -1,12 +1,12 @@
 package server
 
 import (
-	"html/template"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+	"text/template"
 
 	"github.com/kamilsk/passport/pkg/config"
 	"github.com/kamilsk/passport/pkg/errors"
@@ -35,8 +35,8 @@ type Server struct {
 // GetTrackerInstructionV1 is responsible for `GET /api/v1/tracker/instruction` request handling.
 func (s *Server) GetTrackerInstructionV1(rw http.ResponseWriter, req *http.Request) {
 	cookie, err := req.Cookie(sessionKey)
-	if err != nil || !cookie.HttpOnly || !cookie.Secure {
-		cookie = &http.Cookie{Name: sessionKey, Secure: true, HttpOnly: true}
+	if err != nil {
+		cookie = &http.Cookie{Name: sessionKey, HttpOnly: true, Secure: s.baseURL.Scheme == "https"}
 	}
 
 	response := s.service.HandleTrackerInstructionV1(tracker.InstructionRequest{EncryptedSession: cookie.Value})
@@ -75,16 +75,11 @@ func (s *Server) PostTrackerFingerprintV1(rw http.ResponseWriter, req *http.Requ
 	}()
 	cookie, err := req.Cookie(sessionKey)
 	if err != nil {
-		// issue #19: Safari sends cookies in `demo-cross-origin`-mode, but doesn't send it in production
+		// Related articles:
+		// - https://blog.mozilla.org/futurereleases/2018/08/30/changing-our-approach-to-anti-tracking/
+		// - https://webkit.org/blog/7675/intelligent-tracking-prevention/
 		log.Printf("\n\n[CRITICAL] cookie not found, skip this request (%q)\n\n", req.UserAgent())
 		rw.WriteHeader(http.StatusAccepted)
-		_, _ = io.Copy(ioutil.Discard, req.Body)
-		_ = req.Body.Close()
-		return
-	}
-	if !cookie.HttpOnly || !cookie.Secure {
-		// issue #22: prevent cookie manipulation
-		log.Printf("\n\n[CRITICAL] cookie is not safe, skip this request (%+v)\n\n", *cookie)
 		_, _ = io.Copy(ioutil.Discard, req.Body)
 		_ = req.Body.Close()
 		return
