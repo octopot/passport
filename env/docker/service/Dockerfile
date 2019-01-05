@@ -1,21 +1,20 @@
 FROM golang:latest AS build
 
-ARG PACKAGE
-
-WORKDIR /go/src/${PACKAGE}
+WORKDIR /src
 
 ADD . .
 
 ENV GOOS        linux
 ENV GOARCH      amd64
 ENV CGO_ENABLED 0
+ENV GO111MODULE on
 
-RUN echo "os: ${GOOS}" "arch: ${GOARCH}" "cgo: ${CGO_ENABLED}" \
+RUN go env \
  && export _commit="-X main.commit=$(git rev-parse --short HEAD || echo 'none')" \
  && export _date="-X main.date=$(date -u +%FT%X%Z || echo 'unknown')" \
  && export _version="-X main.version=$(git describe --tags 2>&- || echo 'dev' | cut -d - -f 1)" \
  && go build -o /go/bin/service \
-             -ldflags "-s -w ${_commit} ${_date} ${_version}" .
+             -ldflags "-s -w ${_commit} ${_date} ${_version}" -mod vendor .
 
 
 FROM alpine:latest AS service
@@ -26,7 +25,7 @@ RUN adduser -D -H -u 1000 service
 USER service
 
 COPY --from=build /go/bin/service /usr/local/bin/
-COPY ./public/js/fingerprint2.min.js /usr/share/passport/
+COPY --from=build /src/web/js/ /usr/share/passport/
 
 ENV BIND=0.0.0.0 \
     HTTP_PORT=8080 \

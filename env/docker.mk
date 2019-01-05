@@ -1,15 +1,13 @@
 IMAGE_VERSION := 1.x
-PACKAGE       := github.com/kamilsk/passport
 
 
 .PHONY: docker-build
 docker-build:
-	docker build -f env/Dockerfile \
+	docker build -f env/docker/service/Dockerfile \
 	             -t kamilsk/passport:$(IMAGE_VERSION) \
 	             -t kamilsk/passport:latest \
 	             -t quay.io/kamilsk/passport:$(IMAGE_VERSION) \
 	             -t quay.io/kamilsk/passport:latest \
-	             --build-arg PACKAGE=$(PACKAGE) \
 	             --force-rm --no-cache --pull --rm \
 	             .
 
@@ -45,7 +43,7 @@ docker-start:
 	           -p 8091:8091 \
 	           -p 8092:8092 \
 	           -p 8093:8093 \
-	           kamilsk/passport:$(IMAGE_VERSION)
+	           kamilsk/passport:$(IMAGE_VERSION) run --with-profiling --with-monitoring
 
 .PHONY: docker-logs
 docker-logs:
