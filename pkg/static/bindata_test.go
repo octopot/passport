@@ -17,8 +17,9 @@ func TestAsset(t *testing.T) {
 		asset  string
 		golden string
 	}{
-		{"prepare migration", "static/migrations/1_prepare.sql", "./migrations/1_prepare.sql"},
-		{"domain migration", "static/migrations/2_domain.sql", "./migrations/2_domain.sql"},
+		{"common migration", "static/migrations/1_common.sql", "./migrations/1_common.sql"},
+		{"account migration", "static/migrations/2_account.sql", "./migrations/2_account.sql"},
+		{"domain migration", "static/migrations/3_domain.sql", "./migrations/3_domain.sql"},
 		{"client script", "static/scripts/passport.min.js", "./scripts/passport.min.js"},
 	}
 
@@ -50,7 +51,7 @@ func TestAssetDir(t *testing.T) {
 		expected []string
 	}{
 		{"root", "static", []string{"migrations", "scripts"}},
-		{"migrations", "static/migrations", []string{"1_prepare.sql", "2_domain.sql"}},
+		{"migrations", "static/migrations", []string{"1_common.sql", "2_account.sql", "3_domain.sql"}},
 		{"scripts", "static/scripts", []string{"passport.min.js"}},
 		{"not found", "static/migrations/unknown", nil},
 	}
