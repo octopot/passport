@@ -53,7 +53,7 @@ func TestApplicationConfig_Dump(t *testing.T) {
 
 func TestDatabaseConfig_DriverName(t *testing.T) {
 	config, wg := DatabaseConfig{DSN: "postgres://postgres:postgres@127.0.0.1:5432/postgres"}, sync.WaitGroup{}
-	for range Sequence(runtime.GOMAXPROCS(0) + 1) {
+	for range draft.Sequence(runtime.GOMAXPROCS(0) + 1) {
 		wg.Add(1)
 		go func() {
 			assert.Equal(t, "postgres", config.DriverName())
@@ -61,9 +61,4 @@ func TestDatabaseConfig_DriverName(t *testing.T) {
 		}()
 	}
 	wg.Wait()
-}
-
-// Sequence returns an empty slice with the specified size.
-func Sequence(size int) []struct{} {
-	return make([]struct{}, size)
 }
