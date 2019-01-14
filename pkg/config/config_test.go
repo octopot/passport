@@ -5,6 +5,8 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
+	"runtime"
+	"sync"
 	"testing"
 
 	. "github.com/kamilsk/passport/pkg/config"
@@ -14,15 +16,15 @@ import (
 
 var update = flag.Bool("update", false, "update .golden files")
 
-func TestApplicationConfig_Dumping(t *testing.T) {
+func TestApplicationConfig_Dump(t *testing.T) {
 	testCases := []struct {
 		name    string
 		in      string
 		out     string
 		marshal func(interface{}) ([]byte, error)
 	}{
-		{"YAML dump", "fixtures/config.yml", "fixtures/dump.yml.golden", yaml.Marshal},
 		{"JSON dump", "fixtures/config.yml", "fixtures/dump.json.golden", json.Marshal},
+		{"YAML dump", "fixtures/config.yml", "fixtures/dump.yml.golden", yaml.Marshal},
 	}
 
 	for _, test := range testCases {
@@ -50,5 +52,18 @@ func TestApplicationConfig_Dumping(t *testing.T) {
 }
 
 func TestDatabaseConfig_DriverName(t *testing.T) {
-	assert.Equal(t, "postgres", (&DatabaseConfig{DSN: "postgres://postgres:postgres@127.0.0.1:5432/postgres"}).DriverName())
+	config, wg := DatabaseConfig{DSN: "postgres://postgres:postgres@127.0.0.1:5432/postgres"}, sync.WaitGroup{}
+	for range Sequence(runtime.GOMAXPROCS(0) + 1) {
+		wg.Add(1)
+		go func() {
+			assert.Equal(t, "postgres", config.DriverName())
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+}
+
+// Sequence returns an empty slice with the specified size.
+func Sequence(size int) []struct{} {
+	return make([]struct{}, size)
 }

@@ -36,8 +36,8 @@ cmd-migrate-down:
 
 
 .PHONY: demo
-demo: FLAGS = --with-demo
-demo: cmd-migrate
+demo:
+	@echo not implemented yet
 
 .PHONY: dev-server
 dev-server:

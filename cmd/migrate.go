@@ -2,9 +2,7 @@ package cmd
 
 import (
 	"database/sql"
-	"io/ioutil"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 
@@ -34,22 +32,7 @@ var migrateCmd = &cobra.Command{
 		if cnf.Union.MigrationConfig.DryRun {
 			runner = dryRun
 		}
-		if err := runner(layer.Database(), layer.Dialect(), src, direction, limit); err != nil {
-			return err
-		}
-		if direction == migrate.Up && cnf.Union.MigrationConfig.WithDemo {
-			raw, err := ioutil.ReadFile("env/test/fixtures/demo.sql")
-			switch {
-			case err == nil:
-				_, err = layer.Database().Exec(string(raw))
-				log.Printf("demo: error is %#+v", err)
-			case os.IsNotExist(err):
-				log.Println("demo is available only during development")
-			default:
-				return err
-			}
-		}
-		return nil
+		return runner(layer.Database(), layer.Dialect(), src, direction, limit)
 	},
 }
 
@@ -74,8 +57,6 @@ func init() {
 				"limit", "l", 0, "limit the number of migrations (0 = unlimited)")
 			flags.BoolVarP(&cnf.Union.MigrationConfig.DryRun,
 				"dry-run", "", false, "do not apply migration, just print them")
-			flags.BoolVarP(&cnf.Union.MigrationConfig.WithDemo,
-				"with-demo", "", false, "create fake data for demo purpose")
 			return nil
 		},
 	)

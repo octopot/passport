@@ -14,7 +14,6 @@ config:
     schema: public
     limit: 0
     dry-run: false
-    with-demo: false
   monitoring:
     enabled: true
     interface: 127.0.0.1:8091

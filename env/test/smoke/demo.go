@@ -9,27 +9,31 @@ import (
 )
 
 func main() {
-	stoper := exec.Command("make", "stop-service")
-	stoper.Stderr, stoper.Stdout = os.Stderr, os.Stdout
-	_ = stoper.Run()
-	fmt.Println("service down")
+	stopper := exec.Command("make", "stop-service")
+	stopper.Stderr, stopper.Stdout = os.Stderr, os.Stdout
+	if err := stopper.Run(); err != nil {
+		fmt.Println("service down with the error", err)
+	}
 
 	dev := exec.Command("make", "dev-server")
-	_ = dev.Start()
-	fmt.Println("dev server start")
+	if err := dev.Start(); err != nil {
+		fmt.Println("dev server starts with the error", err)
+	}
 
 	go func() {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt)
 		<-c
 		{
-			_ = dev.Process.Kill()
-			fmt.Println("dev server down")
+			if err := dev.Process.Kill(); err != nil {
+				fmt.Println("dev server down with the error", err)
+			}
 
 			starter := exec.Command("make", "start-service")
 			starter.Stderr, starter.Stdout = os.Stderr, os.Stdout
-			_ = starter.Run()
-			fmt.Println("service up")
+			if err := starter.Run(); err != nil {
+				fmt.Println("service up with the error", err)
+			}
 		}
 		signal.Stop(c)
 		fmt.Println()
