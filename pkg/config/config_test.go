@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	. "github.com/kamilsk/passport/pkg/config"
+	"github.com/kamilsk/passport/pkg/draft"
 	"github.com/stretchr/testify/assert"
 	yaml "gopkg.in/yaml.v2"
 )
