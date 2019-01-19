@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	. "github.com/kamilsk/passport/pkg/config"
-	"github.com/kamilsk/passport/pkg/draft"
+	"github.com/kamilsk/platform/pkg/math"
 	"github.com/stretchr/testify/assert"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -54,7 +54,7 @@ func TestApplicationConfig_Dump(t *testing.T) {
 
 func TestDatabaseConfig_DriverName(t *testing.T) {
 	config, wg := DatabaseConfig{DSN: "postgres://postgres:postgres@127.0.0.1:5432/postgres"}, sync.WaitGroup{}
-	for range draft.Sequence(runtime.GOMAXPROCS(0) + 1) {
+	for range math.Sequence(runtime.GOMAXPROCS(0) + 1) {
 		wg.Add(1)
 		go func() {
 			assert.Equal(t, "postgres", config.DriverName())
