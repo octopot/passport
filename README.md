@@ -1,5 +1,5 @@
 > # 👮 Passport [![Tweet][icon_twitter]][twitter_publish] <img align="right" width="126" src=".github/character.png">
-> [![Analytics][analytics_pixel]][page_promo]
+>
 > Person Identifier as a Service &mdash; your personal user tracker and auth service.
 
 [![Patreon][icon_patreon]](https://www.patreon.com/octolab)
