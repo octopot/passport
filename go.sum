@@ -188,8 +188,6 @@ github.com/gobuffalo/x v0.0.0-20181007152206-913e47c59ca7/go.mod h1:9rDPXaB3kXdK
 github.com/gofrs/uuid v3.1.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
 github.com/gogo/protobuf v1.1.1 h1:72R+M5VuhED/KujmZVcIquuo8mBgX4oVda//DQb3PXo=
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
-github.com/golang/mock v0.0.0-20181221212429-e698a2ea17fe h1:aWCeLm7PwSrsT/fX/zfTGn4UhB8lvDjAtOdtyPp2sg0=
-github.com/golang/mock v0.0.0-20181221212429-e698a2ea17fe/go.mod h1:oTYuIxOrZwtPieC+H1uAHpcLFnEyAGVDL/k47Jfbm0A=
 github.com/golang/mock v1.2.0 h1:28o5sBqPkBsMGnC6b4MvE2TzSr5/AT4c/1fLqVGIwlk=
 github.com/golang/mock v1.2.0/go.mod h1:oTYuIxOrZwtPieC+H1uAHpcLFnEyAGVDL/k47Jfbm0A=
 github.com/golang/protobuf v1.1.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
@@ -215,8 +213,8 @@ github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqx
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/kamilsk/go-kit v0.0.0-20180924085458-bcfc2c1707de h1:53Owk6hVtVPTcXEZLoXkiLX8RtAJ2hzBAxZhQMPpSDY=
 github.com/kamilsk/go-kit v0.0.0-20180924085458-bcfc2c1707de/go.mod h1:h4x6B1xj2nw89zH4cRlNFfH1B1VF67fx/sL/F3ASpNA=
-github.com/kamilsk/platform v0.0.0-20190119070916-5b9e98f419e3 h1:vYzrTdC5G3TcsBcBZJ2L9bo32/IeAbUpnP8KAn21BdM=
-github.com/kamilsk/platform v0.0.0-20190119070916-5b9e98f419e3/go.mod h1:ajBWANDRUQmNtfpbiqcGPGQ4LIrIKZTRtvdpXr57c5Y=
+github.com/kamilsk/platform v1.1.0 h1:pLEswj9T1LWmULSB7REqNiGGkODzbtPBvBzv68h2y+0=
+github.com/kamilsk/platform v1.1.0/go.mod h1:CpnY1s2Fm8OQ98/nbZQcn4lfY3A/VqaTRe7MB1KDuo8=
 github.com/karrick/godirwalk v1.7.5/go.mod h1:2c9FRhkDxdIbgkOnCEvnSWs71Bhugbl46shStcFDJ34=
 github.com/karrick/godirwalk v1.7.7/go.mod h1:2c9FRhkDxdIbgkOnCEvnSWs71Bhugbl46shStcFDJ34=
 github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51/go.mod h1:CzGEWj7cYgsdH8dAjBGEr58BoE7ScuLd+fwFZ44+/x8=

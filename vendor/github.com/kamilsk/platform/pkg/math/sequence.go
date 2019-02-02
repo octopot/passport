@@ -5,6 +5,16 @@ import (
 	"sort"
 )
 
+// Sequence returns an empty slice with the specified size.
+//
+//     for range Sequence(5) {
+//             // do something five times
+//     }
+//
+func Sequence(size int) []struct{} {
+	return make([]struct{}, size)
+}
+
 // Reduce wraps sequence to perform some aggregate operations above it.
 //
 //     func Acquire(places ...int) {
@@ -94,14 +104,4 @@ func (sequence reducer) Sum() int {
 		sum += num
 	}
 	return sum
-}
-
-// Sequence returns an empty slice with the specified size.
-//
-//     for range Sequence(5) {
-//             // do something five times
-//     }
-//
-func Sequence(size int) []struct{} {
-	return make([]struct{}, size)
 }

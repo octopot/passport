@@ -28,7 +28,7 @@ github.com/inconshreveable/mousetrap
 github.com/kamilsk/go-kit/pkg/fn
 github.com/kamilsk/go-kit/pkg/strings
 github.com/kamilsk/go-kit/pkg/config
-# github.com/kamilsk/platform v0.0.0-20190119070916-5b9e98f419e3
+# github.com/kamilsk/platform v1.1.0
 github.com/kamilsk/platform/pkg/math
 # github.com/lib/pq v1.0.0
 github.com/lib/pq

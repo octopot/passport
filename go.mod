@@ -6,7 +6,7 @@ require (
 	github.com/gobuffalo/packr v1.21.9 // indirect
 	github.com/golang/mock v1.2.0
 	github.com/kamilsk/go-kit v0.0.0-20180924085458-bcfc2c1707de
-	github.com/kamilsk/platform v0.0.0-20190119070916-5b9e98f419e3
+	github.com/kamilsk/platform v1.1.0
 	github.com/lib/pq v1.0.0
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/pkg/errors v0.8.1
