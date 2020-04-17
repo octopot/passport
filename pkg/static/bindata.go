@@ -203,10 +203,10 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"static/migrations/1_common.sql": staticMigrations1_commonSql,
+	"static/migrations/1_common.sql":  staticMigrations1_commonSql,
 	"static/migrations/2_account.sql": staticMigrations2_accountSql,
-	"static/migrations/3_domain.sql": staticMigrations3_domainSql,
-	"static/scripts/passport.min.js": staticScriptsPassportMinJs,
+	"static/migrations/3_domain.sql":  staticMigrations3_domainSql,
+	"static/scripts/passport.min.js":  staticScriptsPassportMinJs,
 }
 
 // AssetDir returns the file names below a certain
@@ -248,12 +248,13 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
 	"static": &bintree{nil, map[string]*bintree{
 		"migrations": &bintree{nil, map[string]*bintree{
-			"1_common.sql": &bintree{staticMigrations1_commonSql, map[string]*bintree{}},
+			"1_common.sql":  &bintree{staticMigrations1_commonSql, map[string]*bintree{}},
 			"2_account.sql": &bintree{staticMigrations2_accountSql, map[string]*bintree{}},
-			"3_domain.sql": &bintree{staticMigrations3_domainSql, map[string]*bintree{}},
+			"3_domain.sql":  &bintree{staticMigrations3_domainSql, map[string]*bintree{}},
 		}},
 		"scripts": &bintree{nil, map[string]*bintree{
 			"passport.min.js": &bintree{staticScriptsPassportMinJs, map[string]*bintree{}},
@@ -307,4 +308,3 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-

@@ -7,8 +7,9 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/kamilsk/passport/pkg/static"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/kamilsk/passport/pkg/static"
 )
 
 func TestAsset(t *testing.T) {

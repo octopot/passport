@@ -3,8 +3,9 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/kamilsk/passport/pkg/domain"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/kamilsk/passport/pkg/domain"
 )
 
 func TestUUID(t *testing.T) {

@@ -5,9 +5,11 @@
 package server_test
 
 import (
-	gomock "github.com/golang/mock/gomock"
-	tracker "github.com/kamilsk/passport/pkg/transfer/api/v1/tracker"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
+
+	tracker "github.com/kamilsk/passport/pkg/transfer/api/v1/tracker"
 )
 
 // MockService is a mock of Service interface

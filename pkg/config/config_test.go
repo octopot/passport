@@ -9,10 +9,11 @@ import (
 	"sync"
 	"testing"
 
-	. "github.com/kamilsk/passport/pkg/config"
-	"github.com/kamilsk/platform/pkg/math"
 	"github.com/stretchr/testify/assert"
-	yaml "gopkg.in/yaml.v2"
+	"go.octolab.org/sequence"
+	"gopkg.in/yaml.v2"
+
+	. "github.com/kamilsk/passport/pkg/config"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -54,7 +55,7 @@ func TestApplicationConfig_Dump(t *testing.T) {
 
 func TestDatabaseConfig_DriverName(t *testing.T) {
 	config, wg := DatabaseConfig{DSN: "postgres://postgres:postgres@127.0.0.1:5432/postgres"}, sync.WaitGroup{}
-	for range math.Sequence(runtime.GOMAXPROCS(0) + 1) {
+	for range sequence.Simple(runtime.GOMAXPROCS(0) + 1) {
 		wg.Add(1)
 		go func() {
 			assert.Equal(t, "postgres", config.DriverName())

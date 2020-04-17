@@ -5,8 +5,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/kamilsk/passport/pkg/server/router"
 	"github.com/rs/cors"
+
+	"github.com/kamilsk/passport/pkg/server/router"
 )
 
 // NewRouter returns configured `github.com/go-chi/chi` router.

@@ -6,9 +6,11 @@ package service_test
 
 import (
 	context "context"
-	gomock "github.com/golang/mock/gomock"
-	domain "github.com/kamilsk/passport/pkg/domain"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
+
+	domain "github.com/kamilsk/passport/pkg/domain"
 )
 
 // MockStorage is a mock of Storage interface

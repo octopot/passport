@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kamilsk/go-kit/pkg/config"
+	"go.octolab.org/toolkit/config"
 )
 
 // ApplicationConfig holds all configurations of the application.

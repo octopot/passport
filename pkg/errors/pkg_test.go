@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/kamilsk/passport/pkg/errors"
 	deep "github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/passport/pkg/errors"
 )
 
 func TestApplicationError(t *testing.T) {

@@ -9,16 +9,17 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/kamilsk/go-kit/pkg/fn"
-	"github.com/kamilsk/go-kit/pkg/strings"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"go.octolab.org/fn"
+	"go.octolab.org/strings"
+
 	"github.com/kamilsk/passport/pkg/config"
 	"github.com/kamilsk/passport/pkg/server"
 	"github.com/kamilsk/passport/pkg/server/router/chi"
 	"github.com/kamilsk/passport/pkg/service"
 	"github.com/kamilsk/passport/pkg/storage"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var runCmd = &cobra.Command{
