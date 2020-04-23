@@ -11,8 +11,8 @@ import (
 	"github.com/spf13/viper"
 	"go.octolab.org/fn"
 
-	"github.com/kamilsk/passport/pkg/static"
-	"github.com/kamilsk/passport/pkg/storage"
+	"go.octolab.org/ecosystem/passport/internal/static"
+	"go.octolab.org/ecosystem/passport/internal/storage"
 )
 
 var migrateCmd = &cobra.Command{

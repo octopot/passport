@@ -1,3 +1,3 @@
 package signal_test
 
-import _ "github.com/kamilsk/passport/internal/protocol/signal"
+import _ "go.octolab.org/ecosystem/passport/internal/protocol/signal"

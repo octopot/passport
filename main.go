@@ -6,9 +6,10 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/kamilsk/passport/cmd"
-	"github.com/kamilsk/passport/pkg/errors"
 	"github.com/spf13/cobra"
+
+	"go.octolab.org/ecosystem/passport/cmd"
+	"go.octolab.org/ecosystem/passport/internal/errors"
 )
 
 const (

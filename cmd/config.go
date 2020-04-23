@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"go.octolab.org/fn"
 
-	"github.com/kamilsk/passport/pkg/config"
+	"go.octolab.org/ecosystem/passport/internal/config"
 )
 
 var (

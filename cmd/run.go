@@ -15,11 +15,11 @@ import (
 	"go.octolab.org/fn"
 	"go.octolab.org/strings"
 
-	"github.com/kamilsk/passport/pkg/config"
-	"github.com/kamilsk/passport/pkg/server"
-	"github.com/kamilsk/passport/pkg/server/router/chi"
-	"github.com/kamilsk/passport/pkg/service"
-	"github.com/kamilsk/passport/pkg/storage"
+	"go.octolab.org/ecosystem/passport/internal/config"
+	"go.octolab.org/ecosystem/passport/internal/server"
+	"go.octolab.org/ecosystem/passport/internal/server/router/chi"
+	"go.octolab.org/ecosystem/passport/internal/service"
+	"go.octolab.org/ecosystem/passport/internal/storage"
 )
 
 var runCmd = &cobra.Command{

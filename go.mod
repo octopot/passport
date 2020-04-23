@@ -1,4 +1,4 @@
-module github.com/kamilsk/passport
+module go.octolab.org/ecosystem/passport
 
 go 1.12
 
@@ -6,6 +6,7 @@ require (
 	github.com/go-chi/chi v4.1.1+incompatible
 	github.com/golang/mock v1.4.3
 	github.com/lib/pq v1.3.0
+	github.com/mailru/easyjson v0.7.1
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.5.1
 	github.com/rs/cors v1.7.0

@@ -1,3 +1,3 @@
 package http2_test
 
-import _ "github.com/kamilsk/passport/internal/protocol/http2"
+import _ "go.octolab.org/ecosystem/passport/internal/protocol/http2"
