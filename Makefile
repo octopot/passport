@@ -3,7 +3,10 @@
 .DEFAULT_GOAL = test-with-coverage
 GO_VERSIONS   = 1.12 1.13 1.14
 
-SHELL = /bin/bash -euo pipefail
+SHELL := /bin/bash -euo pipefail # `explain set -euo pipefail`
+
+OS   = $(shell uname -s | tr '[:upper:]' '[:lower:]')
+ARCH = $(shell uname -m | tr '[:upper:]' '[:lower:]')
 
 GO111MODULE = on
 GOFLAGS     = -mod=vendor
@@ -123,7 +126,7 @@ test-with-coverage-profile:
 	@go test -cover -covermode count -coverprofile c.out -timeout $(TIMEOUT) $(PACKAGES)
 
 BINARY  = $(BINPATH)/$(shell basename $(MAIN))
-BINPATH = $(PWD)/bin
+BINPATH = $(PWD)/bin/$(OS)/$(ARCH)
 COMMIT  = $(shell git rev-parse --verify HEAD)
 DATE    = $(shell date +%Y-%m-%dT%T%Z)
 LDFLAGS = -ldflags "-s -w -X main.commit=$(COMMIT) -X main.date=$(DATE)"
